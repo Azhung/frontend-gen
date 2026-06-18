@@ -44,8 +44,11 @@ project/
   public/
     images/
   docs/
+    design-system.md
     frontend-map.md
 ```
+
+`docs/design-system.md` 是设计令牌的决策记录（见 `references/design-system.md`），`docs/frontend-map.md` 是项目记忆。两份都是"完整项目/持续加页面"交付物的一部分。
 
 移动端 H5 / App-like 项目可用路由组：
 
@@ -205,15 +208,16 @@ export function bySlug<T extends { slug: string }>(items: T[], slug: string) {
 
 ## 延续文档
 
-生成 `docs/frontend-map.md`，记录：
+生成并持续维护 `docs/frontend-map.md`，把它当**项目记忆**（续建时先读、收尾必更）。记录：
 
 - 路由地图。
-- 主要组件和使用位置。
+- **组件清单**：每个共享组件叫什么、放哪、被哪些页面用——续建时先查这里，能复用就不新建。
 - 数据文件和字段形状。
 - 图片目录。
 - 新增页面步骤。
+- 指向 `docs/design-system.md` 的令牌系统（颜色/字体/刻度/签名元素的事实来源）。
 
-用户要求“完整项目”“后续持续加页面”时，这个文档是交付物的一部分。
+用户要求“完整项目”“后续持续加页面”时，这个文档是交付物的一部分。每次新增/改动后，把变化写回这里，下次续建靠它接力。
 
 ## README 最小内容
 
