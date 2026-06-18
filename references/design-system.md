@@ -88,10 +88,10 @@ Once the system is finalized, write it in **both** places at the same time; the 
 # Design System
 
 ## Personality
-One line: ________ (e.g. a high-end, restrained stone-craft brand)
+One line: ________ (e.g. calm & professional / warm & friendly / high-end & restrained / sharp & modern — pick what fits the business)
 
 ## Signature element
-________ (e.g. serif display headings + a thin terracotta underline hugging the content; the only point of tension across the whole site)
+________ (e.g. a distinctive heading treatment, a repeating structural motif, or one restrained accent — the only point of tension across the whole site)
 
 ## Color (semantic → value)
 - Background/surface/border/body/muted: …

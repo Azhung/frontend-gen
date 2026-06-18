@@ -29,6 +29,7 @@ Four core principles, in priority order:
 - Testing (as needed, tiered, doesn't break runs-out-of-the-box): `references/testing.md`
 - SEO optimization (a must for websites/landing pages; actually do it): `references/seo.md`
 - Extend & hand off (deploy / backend / Figma — how to hand off and install other skills/MCP when out of scope): `references/extend-and-handoff.md`
+- Verify & audit (tiered: fast default check + design-lint; opt-in deep a11y/perf/visual audit): `references/verify-audit.md`
 - Delivery acceptance: `references/quality-gates.md`
 
 ## When to use
@@ -53,7 +54,12 @@ The core of this skill is "generate/improve a frontend project". The following g
 The user likely doesn't code and won't fix the environment themselves. What you deliver must be a complete, ready-to-run project:
 
 - **Check the runtime environment first; don't assume Node is installed**: before starting, run `node -v && npm -v`.
-  - Not installed / too old: guide installation in plain language, and if you can do it for them, **install with their consent** — on macOS use Homebrew (`brew install node`) or the [nodejs.org](https://nodejs.org) installer (pick LTS); on Windows use the official LTS installer; on Linux use the package manager or nvm. If you can't (permissions/restricted environment), give the simplest steps + the official link and explain to come back once installed.
+  - If missing/too old, walk this **install fallback chain** — always **with the user's consent**, and remember the AI can run CLI installs but **cannot click through GUI installers**, so step down the chain until one works:
+    1. **Version manager, no admin needed (preferred — most AI-runnable end-to-end):** macOS/Linux — install nvm (`curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash`) then `nvm install --lts`; Windows — use `nvm-windows`. Avoids admin prompts; the AI can run the whole thing.
+    2. **Package manager, if one already exists:** macOS `brew install node`; Windows `winget install OpenJS.NodeJS.LTS`; Linux the distro package manager (`apt`/`dnf`/…, may need `sudo`). Use only if that manager is already installed.
+    3. **GUI installer — the user does this step:** if no CLI path works, give the [nodejs.org](https://nodejs.org) LTS link + the simplest click-through steps and explain the AI can't click a `.pkg`/`.msi`; the user installs, then comes back.
+    4. **Zero-Node fallback:** if none of the above is possible (restricted/sandboxed, no install rights), deliver a pure static single-HTML version that needs no Node, and say so honestly.
+    After any install, re-run `node -v && npm -v` to confirm before continuing.
   - Use whatever package manager is present (if pnpm/yarn exists, use it); don't force npm. If the port is taken, switch ports and say so.
   - A pure static single-page approach (a single HTML file) **needs no Node** — a reasonable fallback when a beginner has zero environment.
 - No matter how brief the input, generate a **complete, runnable** project — don't give only fragments and don't leave TODO-style half-finished work.
@@ -97,6 +103,24 @@ Design feel isn't optional, and it must be "system first, pages second". For a n
 - **Two-pass method**: once the tokens are drafted, first self-check against the "three generic AI default looks" (list in `references/design-system.md`), then write code; if you hit one, change it to a choice that fits this business.
 - **Signature + restraint**: spend boldness only on the one signature element and keep the surroundings quiet; avoid purple-blue gradients, gradient text, screen-full rounded corners with big shadows and glassmorphism, the Hero→three-cards→testimonials→CTA formula, emoji as icons, and fake placeholder copy.
 - **Self-check**: strip the content and look at just the skeleton — the interface should still be recognizable as "this business", not a generic template you could drop onto any business.
+
+## Progress & ETA (tell the user where things stand)
+
+Right after deciding new-build vs extend, tell the user the plan in one line — how many steps and a rough time estimate — then emit a short progress marker as you enter each step, so they always know where things are and what's left. Be honest that times are estimates; `npm install`, the build, network, and the optional deep audit are what dominate and vary.
+
+Rough estimates (state a range, not a false-precision number):
+
+| Task | Steps | Rough ETA (dominated by install/build/network) |
+| --- | --- | --- |
+| New build (Next + install + build + verify) | ~7 | ~3–8 min |
+| Extend an existing project (add a page) | ~3 | ~1–3 min |
+| Zero-Node single-HTML fallback | ~1 | < 1 min |
+| + optional deep audit | +1 | +1–3 min |
+
+Format:
+- Start line: `Plan: 7 steps · est. ~4–8 min (npm install/network dominates)`
+- Per step: `▸ [3/7] Lock the design system…`
+- If a step runs long (install, build, audit) or hits a snag, say so instead of going silent or pretending it's instant.
 
 ## Workflow
 
@@ -149,6 +173,7 @@ This is an execution checklist, not a suggestion.
    - **SEO (websites/landing/content sites)**: per `references/seo.md`, **actually do** the SEO basics (per-page metadata, OG image, sitemap/robots, semantics, alt), not just advise.
    - **Start the dev server to verify when you can**: if the environment allows, actually start it, confirm it opens, give the local URL, and fix until it runs; when the environment is restricted (e.g. a sandbox can't start servers), at least pass type/build, give the user clear local startup steps and the expected URL, and **honestly state you didn't start it yourself**.
    - Run the "self-check & repair" in `references/quality-gates.md` (no console errors, key interactions work, no breakage at three widths); when you find a bug, "reproduce → locate → fix source → re-verify", don't just check that it "starts"; when stuck, narrow scope or ship a degraded version and say so honestly.
+   - **Verify (tiered, see `references/verify-audit.md`)**: by default run the light path — the self-check above plus the fast static `node scripts/design-lint.mjs <projectDir>` to catch design-token drift (cheap, every run). Run the **deep audit** (axe a11y + performance + 3-width visual, capped at 2 fix passes) **only on demand** — when going to production / a real website, or when the user asks. Don't run heavy audits on every quick generation, and don't add audit tools to the project's deps.
    - Then run the delivery checklist in that file (design-system consistency, design feel, avoiding AI slop, SEO).
    - **Closing loop (the key to sustainability)**: write the routes/components/data/token changes from this round back into `docs/frontend-map.md`; if the token system changed, update `docs/design-system.md` too. The next extension relies on these two files to carry on, with no starting over.
    - Explain in plain language which file to edit later to add pages, add data, or swap images.
