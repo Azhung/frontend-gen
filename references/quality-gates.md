@@ -7,7 +7,9 @@
 - 项目自带完整 `package.json`、`tsconfig.json`、`next.config.mjs`，依赖能装上，或沿用现有依赖。
 - `npm run typecheck` 或等价类型检查通过；没有脚本时运行 `npx tsc --noEmit`。
 - `npm run build` 通过；如果失败，说明具体原因。
-- 真正启动过本地 dev server，确认能打开，并给出 URL；跑不通先修到跑通再交付。
+- 环境允许就真正启动本地 dev server 确认能打开并给出 URL（跑不通先修到跑通）；环境受限不能起服务时，至少类型/构建通过，并给出本地启动步骤与预期地址，如实说明未亲自启动。
+- 有逻辑/关键流程或用户要求时，已按 `references/testing.md` 补了对应层级测试且跑绿；纯静态站以浏览器自检替代。
+- 官网/落地页/内容站已按 `references/seo.md` 做了 SEO 基础（每页 metadata、OG 图、sitemap/robots、canonical、语义化、alt）。
 - 最终回复最后一行必须固定写当前运行访问地址：`当前访问地址：http://localhost:xxxx`。如果无法启动，写：`当前访问地址：未启动（原因：...）`。
 - 没有遗留 TODO、半成品页面、报错或需要用户自己补的步骤。
 - 每个页面在三档宽度（~375px 手机 / ~768px 平板 / ~1280px 桌面）下都不重叠、不溢出、不破图，且不出现意外的横向滚动（刻意的横滑组件除外）。
