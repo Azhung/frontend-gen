@@ -1,59 +1,58 @@
-# 设计手感
+# Design Craft
 
-要让生成的项目“有人味、有设计感”，不像随手套模板的 AI 产物时，读这一份。
-目标不是堆装饰，而是让每个决定都有理由。先有内容和气质，再谈样式。
+Read this when you want the generated project to feel "human-made and intentionally designed" rather than a generic AI-generated look. The goal isn't to pile on decoration, but to give every decision a reason. Content and personality come first, styling second.
 
-## 一句话原则
+## One-line principle
 
-克制、有层次、贴内容。宁可朴素而精确，也不要华丽而空洞。
+Be restrained, layered, and true to the content. Better plain and precise than ornate and hollow.
 
-> 配色/字体/刻度等"令牌系统"如何系统化产出并锁定，见 `references/design-system.md`。本篇讲的是把令牌用出"手感"的判断。
+> For how to systematically produce and lock down the "token system" (colors / fonts / scales), see `references/design-system.md`. This document is about the judgment needed to use those tokens with real craft.
 
-## 几个高杠杆的设计判断
+## A few high-leverage design judgments
 
-这些决定一个页面是"有想法"还是"安全平庸"，比堆细节更重要：
+These decide whether a page feels "thoughtful" or "safely mediocre" — they matter more than piling on details:
 
-- **首屏是一个论点，不是一个套路。** 开场就放这个业务里最有代表性的东西——可以是一句有力的主张、一张能定调的图、一个真实数据、一个可交互的瞬间。"一个大数字 + 小标签 + 渐变点缀"是模板答案，只有当它确实最合适时才用。
-- **结构即信息。** 序号、眉标、分隔线、标签这些结构件要承载真实含义，而不是装饰。比如编号(01/02/03)只在内容真的是有序步骤/时间线时才用；不是流程就别套编号。
-- **复杂度匹配愿景。** 想要繁复就把繁复执行到位；想要极简就在间距、字体、对齐的精确度上较真。优雅 = 把选定的方向执行干净，不是半繁不简。
-- **把大胆只花在一处（签名元素）。** 让签名元素成为这个页面被记住的点，周围一切保持安静克制；删掉任何不服务于内容的装饰。不冒险本身也是一种风险——但只冒一次。
-- **文案是设计材料。** 标题说清价值，按钮说清动作，同一动作全流程同名（"发布"按钮 → "已发布"提示）。空状态/报错是给方向的机会，不是摆设。
+- **The first screen is an argument, not a formula.** Open with the most representative thing in this business — it could be a strong claim, an image that sets the tone, a real number, or an interactive moment. "One big number + small label + gradient accent" is the template answer; use it only when it genuinely fits best.
+- **Structure is information.** Structural pieces like numbering, eyebrows, dividers, and labels should carry real meaning, not decoration. For example, use numbering (01/02/03) only when the content really is an ordered sequence of steps/timeline; if it isn't a sequence, don't slap numbers on it.
+- **Match complexity to the vision.** If you want richness, execute the richness fully; if you want minimalism, sweat the precision of spacing, type, and alignment. Elegance = executing the chosen direction cleanly, not landing half-rich and half-minimal.
+- **Spend boldness in exactly one place (the signature element).** Let the signature element be what makes the page memorable, and keep everything around it quiet and restrained; cut any decoration that doesn't serve the content. Playing it safe is itself a risk — but take the risk only once.
+- **Copy is a design material.** Headlines make the value clear, buttons make the action clear, and the same action keeps the same name throughout ("Publish" button → "Published" toast). Empty states / errors are a chance to give direction, not filler.
 
-## 先定气质，再写样式
+## Set the personality first, then write styles
 
-动手前先用一句话写下这个项目的气质，并据此选型，不要每个项目都长一个样：
+Before you start, write down this project's personality in one sentence and make choices based on it — don't let every project end up looking the same:
 
-- 它是冷静专业，还是温暖亲切？是高端克制，还是热闹活泼？
-- 参考资料的品牌信号（logo、颜色、字体、语气、图片风格）是什么？
-- 目标人群看到第一屏，应该产生什么感觉？
+- Is it calm and professional, or warm and friendly? High-end and restrained, or lively and energetic?
+- What brand signals do the reference materials send (logo, colors, fonts, tone, image style)?
+- What should the target audience feel when they see the first screen?
 
-把这句话写进 `docs/frontend-map.md`，让后续页面都服从同一种气质。
+Write this sentence into `docs/frontend-map.md` so every later page obeys the same personality.
 
-## 去 AI 味清单
+## Anti-AI-slop checklist
 
-下面这些是“一眼假”的典型特征。默认全部避免，除非参考资料明确要求。
+The following are the hallmarks of the generic AI-generated look. Avoid all of them by default, unless the reference materials explicitly call for them.
 
-| 不要 | 改成 |
+| Don't | Change to |
 | --- | --- |
-| 紫蓝渐变背景 + 渐变文字 | 一个克制的主色，纯色或极浅的层次。 |
-| 满屏圆角 + 多层投影 + 玻璃拟态 | 圆角统一成 1–2 个档位，投影少而轻。 |
-| 千篇一律的 Hero→三个图标卡→客户评价→CTA | 按真实内容编排板块顺序，允许不对称。 |
-| 每个区块都居中、都一样宽、都一样间距 | 用对齐和疏密制造节奏与重点。 |
-| Emoji 当图标、✨ 当点缀、"Powered by AI" 徽章 | 用真实图标或克制的排版重音。 |
-| 假占位文案（Lorem、"你的标语放这里"） | 用参考资料里的真实文案；缺就写贴业务的短句。 |
-| 通用 SaaS 模板配色（亮紫、霓虹青、深色卡片悬浮） | 从内容/品牌里提取颜色，中性底 + 一个强调色。 |
-| 所有标题都同一字重、同一字号 | 建立明确的字号与字重层级。 |
-| 处处大圆角药丸按钮 + 全大写字母 | 按钮形态服从整体气质，慎用全大写。 |
+| Purple-blue gradient background + gradient text | One restrained primary color, solid or with very light layering. |
+| Rounded corners everywhere + multiple shadow layers + glassmorphism | Unify radii into 1–2 steps, few and light shadows. |
+| The cookie-cutter Hero → three icon cards → testimonials → CTA | Order sections by the real content, and allow asymmetry. |
+| Every block centered, same width, same spacing | Use alignment and density to create rhythm and emphasis. |
+| Emoji as icons, ✨ as accents, "Powered by AI" badges | Use real icons or restrained typographic emphasis. |
+| Fake placeholder copy (Lorem, "your tagline here") | Use the real copy from the reference materials; if missing, write short lines that fit the business. |
+| Generic SaaS template palette (bright purple, neon cyan, floating dark cards) | Pull colors from the content/brand: a neutral base + one accent color. |
+| All headings the same weight, same size | Establish a clear hierarchy of size and weight. |
+| Pill buttons with large radii everywhere + all-caps text | Button form should obey the overall personality; use all-caps sparingly. |
 
-判断标准：如果换一个完全不同的业务，这套界面还能直接复用，那它大概率太通用、太没设计感。
+A litmus test: if this interface could be reused as-is for a completely different business, it's probably too generic and lacks real design.
 
-## 颜色
+## Color
 
-- 先定一个中性色阶（背景、表面、边框、正文、弱文字），再加一个主强调色，最后才是状态色。
-- 强调色用在真正需要被点击或被注意的地方，不要刷满整屏。
-- 同一项目颜色总数克制：中性 5 档左右 + 主色 1 个 + 状态色 2–3 个。
-- 深色背景不是高级的捷径；浅色克制同样高级，且更安全。
-- 颜色全部进 `:root` 变量，禁止散落的 hex。
+- Define a neutral scale first (background, surface, border, body text, muted text), then add one primary accent color, and only then status colors.
+- Use the accent color where something genuinely needs to be clicked or noticed; don't paint it across the whole screen.
+- Keep the total number of colors restrained within a project: about 5 neutral steps + 1 primary + 2–3 status colors.
+- A dark background is not a shortcut to looking premium; restrained light is equally premium, and safer.
+- Put all colors into `:root` variables; no stray hex values allowed.
 
 ```css
 :root {
@@ -62,18 +61,18 @@
   --border: #e7e3da;
   --text: #1a1a1a;
   --muted: #6b6b6b;
-  --accent: #b5502f;     /* 从品牌/内容里提取，不是默认蓝紫 */
+  --accent: #b5502f;     /* pulled from the brand/content, not the default blue-purple */
   --accent-weak: #f3e3dc;
 }
 ```
 
-## 字体与排版
+## Typography
 
-- 选有性格的字体搭配：一个用于标题，一个用于正文；不要全站只用一个默认无衬线。
-- 中文项目优先考虑系统中文字体栈或明确的中文字体，别让中文用英文字体兜底导致字重发虚。
-- 建立字号比例（如 13 / 15 / 18 / 24 / 32 / 44），标题和正文之间要有明显落差。
-- 正文行高放松（约 1.6），标题行高收紧。正文每行宽度控制在约 60–75 字符。
-- 用字重、字号、颜色、间距建立层级，而不是靠加粗一切或全大写。
+- Choose a font pairing with character: one for headings, one for body; don't use a single default sans-serif site-wide.
+- For CJK projects, prefer a system CJK font stack or an explicit CJK font; don't let CJK text fall back to a Latin font and end up looking thin.
+- Establish a type scale (e.g. 13 / 15 / 18 / 24 / 32 / 44), with a clear gap between headings and body.
+- Loosen body line-height (around 1.6) and tighten heading line-height. Keep body line width to about 60–75 characters.
+- Build hierarchy with weight, size, color, and spacing, rather than bolding everything or using all-caps.
 
 ```css
 :root {
@@ -88,44 +87,44 @@
 }
 ```
 
-## 间距与节奏
+## Spacing and rhythm
 
-- 用一套间距刻度（如 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64），不要随手写魔法数字。
-- 留白是设计的一部分。板块之间给足呼吸感，相关元素靠近、无关元素拉开。
-- 同类板块的纵向节奏保持一致，让页面有韵律。
-- 别把所有东西塞满整行宽度；正文和卡片要有最大宽度约束。
+- Use a single spacing scale (e.g. 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64); don't write magic numbers off the cuff.
+- Whitespace is part of the design. Give sections enough room to breathe; pull related elements close and push unrelated ones apart.
+- Keep the vertical rhythm consistent across sections of the same kind, so the page has cadence.
+- Don't cram everything to the full line width; body text and cards should have a max-width constraint.
 
-## 布局
+## Layout
 
-- 先想清楚网格，再放内容。允许打破对称：图文左右错落、卡片大小不均、强调项更大。
-- 一屏只突出一个重点，别让多个元素同时抢视觉焦点。
-- 移动端优先就老老实实做移动端：单列、拇指可达、固定栏不遮内容、注意 `100dvh` 和 `env(safe-area-inset-bottom)`。
-- 详情页、列表页、表单页各有合适的版式，不要都套同一个三栏卡片。
+- Think through the grid before placing content. Allow breaking symmetry: stagger image and text left/right, vary card sizes, make the emphasized item larger.
+- Highlight only one focal point per screen; don't let multiple elements fight for visual attention at once.
+- If it's mobile-first, then do mobile properly: single column, thumb-reachable, fixed bars that don't cover content, and mind `100dvh` and `env(safe-area-inset-bottom)`.
+- Detail pages, list pages, and form pages each deserve a fitting layout; don't reuse the same three-column card layout for all of them.
 
-## 细节与质感
+## Details and texture
 
-- 卡片、图片、头像统一宽高比，避免参差破版。
-- 边框、分割线用得克制；很多时候用间距区分比加线更干净。
-- 状态要做全：hover、focus、active、disabled、空状态、加载、缺图兜底。
-- 缺图时做设计化占位（首字母、纯色块、品牌图形），不要破图图标。
-- 焦点态要清晰可见，别为了好看去掉 focus 轮廓。
+- Unify aspect ratios for cards, images, and avatars to avoid ragged, broken layouts.
+- Use borders and dividers sparingly; often spacing separates things more cleanly than adding lines.
+- Cover all states: hover, focus, active, disabled, empty state, loading, and missing-image fallback.
+- For missing images, make a designed placeholder (initial letter, solid color block, brand graphic), not a broken-image icon.
+- Keep the focus state clearly visible; don't remove the focus outline for looks.
 
-## 动效
+## Motion
 
-- 动效服务于理解和反馈，不是炫技。过渡时长约 150–250ms，缓动自然。
-- 入场动画克制，避免整页元素逐个飞入。
-- 一律尊重 `prefers-reduced-motion`，关闭非必要动画。
+- Motion serves comprehension and feedback, not flair. Transition durations around 150–250ms, with natural easing.
+- Keep entrance animations restrained; avoid the whole page flying in element by element.
+- Always respect `prefers-reduced-motion` and turn off non-essential animations.
 
-## 内容
+## Content
 
-- 真实、具体、简短的文案胜过华丽空话。标题说清价值，按钮说清动作。
-- 不在界面里写“这里是你的标题”这类说明性占位。
-- 数字、名称、案例尽量用参考资料里的真实信息；确实没有就写贴合业务的合理内容，并标注待替换。
+- Real, specific, short copy beats ornate empty talk. Headlines make the value clear, buttons make the action clear.
+- Don't write explanatory placeholders like "your headline goes here" into the interface.
+- Use real numbers, names, and cases from the reference materials wherever possible; if there genuinely are none, write reasonable content that fits the business and mark it as pending replacement.
 
-## 自检三问
+## Three self-check questions
 
-交付前问自己：
+Before delivery, ask yourself:
 
-1. 把内容删掉只看骨架，这套界面还认得出是“这个业务”吗？（认得出 = 有针对性）
-2. 任意两个板块，间距、对齐、字号层级是不是一致且有理由？
-3. 有没有出现去 AI 味清单里的特征？有就改掉。
+1. Strip the content and look only at the skeleton — can you still recognize it as "this business"? (Recognizable = purposeful)
+2. For any two sections, are the spacing, alignment, and type hierarchy consistent and justified?
+3. Does anything from the anti-AI-slop checklist show up? If so, fix it.

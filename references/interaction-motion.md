@@ -1,33 +1,33 @@
-# 交互 · 动效 · 图标
+# Interaction · Motion · Icons
 
-页面不止是静态版式——交互、动效、图标决定它"活不活、专不专业"。但**这三样最容易用力过猛变成 AI 味**（满屏飞入、炫技过渡、emoji 当图标）。原则一句话：**服务于理解与反馈，克制、统一、可关闭。**
+A page is more than static layout—interaction, motion, and icons decide whether it feels "alive and professional." But **these three are the easiest to overdo into AI slop** (everything flying in, show-off transitions, emoji as icons). The principle in one line: **serve understanding and feedback; be restrained, consistent, and disableable.**
 
-## 一、交互与状态
+## 1. Interaction and States
 
-可交互的东西必须"看得出能点、点了有反馈"。
+Anything interactive must "look clickable, and give feedback when clicked."
 
-- **状态做全**：每个可交互元素都要有 `hover / focus-visible / active / disabled`，以及 `loading / 空 / 错误 / 缺图` 兜底。缺状态的界面显得没做完。
-- **焦点可见**：`:focus-visible` 留清晰轮廓（用 `--grass` 类强调色），别为好看删掉。
-- **反馈用同一套词**：触发与结果同名——"发布"按钮 → "已发布"提示；"保存" → "已保存"。别中途换词。
-- **键盘与触屏**：可 Tab 到、回车/空格可触发；触屏可点区域 ≥ 44px；固定栏留 `env(safe-area-inset-bottom)`。
-- **表单**：实时或提交时校验，错误信息贴在字段旁、说清怎么改；提交中禁用按钮并给 loading。
-- **客户端边界**：只有需要状态/事件/浏览器 API 的组件才加 `'use client'`；展示型保持 Server Component（见 `frontend-architecture.md`）。
+- **Cover all states**: every interactive element needs `hover / focus-visible / active / disabled`, plus `loading / empty / error / missing-image` fallbacks. An interface with missing states looks unfinished.
+- **Visible focus**: keep a clear outline for `:focus-visible` (use the `--grass`-style accent color); don't delete it for the sake of looks.
+- **Use the same wording for feedback**: the trigger and the result share a name—a "Publish" button → "Published" toast; "Save" → "Saved." Don't switch wording midway.
+- **Keyboard and touch**: tabbable, triggerable with Enter/Space; touch tap targets ≥ 44px; fixed bars reserve `env(safe-area-inset-bottom)`.
+- **Forms**: validate in real time or on submit, place error messages next to the field and explain how to fix them; disable the button during submission and show loading.
+- **Client boundary**: only add `'use client'` to components that need state/events/browser APIs; keep presentational ones as Server Components (see `frontend-architecture.md`).
 
-## 二、动效与过渡（克制优先）
+## 2. Motion and Transitions (restraint first)
 
-### 该动的
-- **状态变化**：hover、展开/收起、Tab 切换、弹层进出——用 `transition`，时长 `--dur`(150–250ms)、缓动 `--ease`。
-- **一个编排过的入场瞬间**：首屏一次有节制的揭示（如标题 + 主视觉轻微上移淡入）比满屏元素逐个飞入更高级。整页只设计一个"主动效时刻"。
-- **滚动揭示**：长页面可让区块进入视口时轻微淡入上移——但**幅度小、只一次、别每个元素都来**。
-- **微交互**：按钮按下轻微下沉、卡片 hover 轻微抬起/描边——细微即可。
+### What should move
+- **State changes**: hover, expand/collapse, tab switching, popover enter/exit—use `transition`, with duration `--dur` (150–250ms) and easing `--ease`.
+- **One choreographed entrance moment**: a single restrained reveal on the first screen (e.g. heading + hero subtly sliding up and fading in) is more refined than every element flying in one by one. Design only one "main entrance moment" for the whole page.
+- **Scroll reveal**: long pages may let sections subtly fade and slide up as they enter the viewport—but **small in amount, only once, and not on every element.**
+- **Micro-interactions**: a button sinking slightly on press, a card lifting/outlining slightly on hover—keep it subtle.
 
-### 不该动的（AI 味来源）
-- 整页元素逐个弹跳飞入；超过 ~300ms 的长动画；无限循环的装饰动画；视差堆砌；炫技过渡。
-- 动效不能成为理解内容的障碍或延迟。
+### What should not move (sources of AI slop)
+- Every element on the page bouncing/flying in one by one; animations longer than ~300ms; infinitely looping decorative animations; piled-on parallax; show-off transitions.
+- Motion must never become an obstacle to or a delay in understanding the content.
 
-### 落地
-- 用令牌：`transition: color var(--dur) var(--ease)`，别每处写不同魔法时长。
-- 入场/滚动揭示示例（轻量、纯 CSS + 一个小 hook）：
+### Implementation
+- Use tokens: `transition: color var(--dur) var(--ease)`, instead of writing a different magic duration in each place.
+- Entrance / scroll-reveal example (lightweight, pure CSS + a small hook):
 
 ```css
 .reveal { opacity: 0; transform: translateY(12px); transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease); }
@@ -35,7 +35,7 @@
 ```
 
 ```ts
-// hooks/useReveal.ts —— IntersectionObserver，进视口加 .in，只触发一次
+// hooks/useReveal.ts —— IntersectionObserver: add .in when it enters the viewport, fire only once
 "use client";
 import { useEffect, useRef } from "react";
 export function useReveal<T extends HTMLElement>() {
@@ -49,22 +49,22 @@ export function useReveal<T extends HTMLElement>() {
 }
 ```
 
-- **页面/路由过渡**（可选）：用 CSS View Transitions 或一个简单淡入即可，别做花哨切场。
-- **无障碍硬性要求**：一律尊重 `prefers-reduced-motion: reduce`（令牌里已把 `--dur` 归零）；关键信息不能只靠动画传达。
+- **Page/route transitions** (optional): CSS View Transitions or a simple fade is enough; don't build flashy scene changes.
+- **Hard accessibility requirement**: always respect `prefers-reduced-motion: reduce` (the tokens already zero out `--dur`); critical information must never be conveyed by animation alone.
 
-## 三、图标
+## 3. Icons
 
-图标统一与否，直接决定"像不像一套设计"。
+Whether icons are consistent directly decides whether something "looks like one coherent design."
 
-- **一套图标族，别混用**：优先用一致的线性图标库（如 `lucide-react`），全站同一族、同一风格；不要这里线性那里面性、这里实心那里描边。
-- **图标令牌**：尺寸、线宽统一（如 `--icon-size: 20px; --icon-stroke: 1.75`），跟随字号/气质，别每处随手定。
-- **emoji 不是图标**：除非刻意的趣味/国旗场景，UI 功能图标不要用 emoji（这是去 AI 味清单里的点）。
-- **自定义 / 品牌图标 = 内联 SVG**：库里没有的、或需要品牌感的，画**内联 SVG**，遵循设计系统的线宽、圆角、强调色（用 `currentColor` 继承文字色，方便统一着色）。
-- **"生成"图标的边界**：能用简单几何 + `currentColor` 内联 SVG 表达的（箭头、对勾、logo 母题、分隔母题）就自己画进 `components/ui/icons/` 或 `public/icons/`；复杂插画/写实图标不要硬画成劣质 SVG——交给设计资源或图库。
-- **可访问性**：装饰图标 `aria-hidden="true"`；承载信息的图标给 `aria-label` 或配文字。
-- **资源放置**：SVG 图标做成小组件（`components/ui/icons/`）或放 `public/icons/`，路径集中，别散落。
+- **One icon family, no mixing**: prefer a consistent line-icon library (such as `lucide-react`), the same family and style site-wide; don't go line here and filled there, solid here and outlined there.
+- **Icon tokens**: unify size and stroke width (e.g. `--icon-size: 20px; --icon-stroke: 1.75`), following the font size/character, instead of setting them ad hoc each time.
+- **Emoji are not icons**: unless it's a deliberate playful/flag scenario, don't use emoji for functional UI icons (this is a point on the AI-slop-removal checklist).
+- **Custom / brand icons = inline SVG**: for what the library lacks, or what needs brand feel, draw an **inline SVG** that follows the design system's stroke width, corner radius, and accent color (use `currentColor` to inherit text color for easy uniform coloring).
+- **The boundary of "generating" icons**: anything expressible with simple geometry + `currentColor` inline SVG (arrows, checkmarks, logo motifs, divider motifs) you draw yourself into `components/ui/icons/` or `public/icons/`; don't force complex illustrations/realistic icons into crummy SVG—hand those to design resources or an icon library.
+- **Accessibility**: decorative icons get `aria-hidden="true"`; informative icons get `aria-label` or accompanying text.
+- **Asset placement**: make SVG icons small components (`components/ui/icons/`) or place them in `public/icons/`, with centralized paths, not scattered around.
 
-## 自检
-- 所有可交互元素有 hover/focus/active/disabled + 必要的空/错/加载态。
-- 动效有节制：只一个主入场时刻，无满屏飞入，时长用令牌，`prefers-reduced-motion` 生效。
-- 图标同族同尺寸同线宽，无 emoji 充当功能图标，装饰图标 `aria-hidden`。
+## Self-check
+- All interactive elements have hover/focus/active/disabled + the necessary empty/error/loading states.
+- Motion is restrained: only one main entrance moment, no full-screen fly-in, durations use tokens, `prefers-reduced-motion` takes effect.
+- Icons are the same family, size, and stroke width; no emoji standing in as functional icons; decorative icons are `aria-hidden`.

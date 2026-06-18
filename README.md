@@ -1,101 +1,92 @@
 # frontend-gen
 
-`frontend-gen` 是一个 Codex Skill，用来根据参考 HTML、截图、图片、文案、需求说明或一句话想法，生成或继续扩展纯前端 React / Next.js 项目。
+> 🌐 **English** · [中文](README.zh-CN.md)
 
-它适合：
+`frontend-gen` is a frontend skill that generates or continuously extends pure-frontend React / Next.js projects from reference HTML, screenshots, images, copy, a requirements note, or a one-line idea. Works with **Claude Code** and **Codex**.
 
-- 从零搭建 Next.js App Router 前端项目
-- 把 HTML / 旧原型重构成可维护的 React / Next 项目
-- 根据截图、图片、文案和需求生成 PC 网页、响应式官网、移动 H5、作品集、工具型前端
-- 持续追加页面，并保持统一的路由、组件、数据和样式结构
+It's good for:
 
-## Codex 安装
+- Building a Next.js App Router frontend project from scratch
+- Refactoring HTML / old prototypes into a maintainable React / Next project
+- Generating PC web pages, responsive websites, mobile H5, portfolios, and tool-style frontends from screenshots, images, copy, and requirements
+- Continuously adding pages while keeping a consistent routing, component, data, and style structure
 
-把整个 `frontend-gen` 文件夹复制到 Codex skills 目录：
+## Install
+
+**Recommended — install straight from GitHub (Claude Code & Codex):**
 
 ```bash
-mkdir -p ~/.codex/skills
-cp -R frontend-gen ~/.codex/skills/
+npx skills add Azhung/frontend-gen -a claude-code   # Claude Code (per-project)
+npx skills add Azhung/frontend-gen -a codex         # Codex
+npx skills add Azhung/frontend-gen -a both -g        # both + global
 ```
 
-安装后重启 Codex。
+After installing, **start a new session** so it gets picked up.
 
-确认目录结构类似：
+**Manual (from a local clone):** copy the whole `frontend-gen` folder into the skills directory.
+
+```bash
+# Codex
+mkdir -p ~/.codex/skills && cp -R frontend-gen ~/.codex/skills/
+# Claude Code
+mkdir -p ~/.claude/skills && cp -R frontend-gen ~/.claude/skills/
+```
+
+Then restart Codex / Claude Code. Make sure the structure looks like:
 
 ```text
-~/.codex/skills/frontend-gen/
+~/.codex/skills/frontend-gen/   (or ~/.claude/skills/frontend-gen/)
   SKILL.md
   agents/
   references/
 ```
 
-> 注意：必须复制整个文件夹，不能只复制 `SKILL.md`。
+Notes:
 
-## Claude Code 安装
+- `SKILL.md` and `references/` are the core content used by both Claude Code and Codex.
+- `agents/openai.yaml` is Codex/OpenAI interface metadata; Claude Code ignores it, and keeping it doesn't affect usage.
+- **Copy the whole folder, not just `SKILL.md`.**
+- The plain Claude.ai web app usually can't install a local skill folder; paste the contents of `SKILL.md` into Project instructions or the chat context instead.
 
-如果使用 Claude Code，也可以把整个 `frontend-gen` 文件夹复制到 Claude skills 目录：
+## Usage
 
-```bash
-mkdir -p ~/.claude/skills
-cp -R frontend-gen ~/.claude/skills/
-```
-
-安装后重启 Claude Code。
-
-确认目录结构类似：
+Generate a project from scratch:
 
 ```text
-~/.claude/skills/frontend-gen/
-  SKILL.md
-  agents/
-  references/
+Use frontend-gen to build a Next.js pure-frontend project from scratch.
+
+Project type: responsive marketing website (PC)
+Pages: Home, Product list, Product detail, About, Contact
+Requirements: TypeScript, plain CSS, component encapsulation, static data in data/, shared functions in lib/, easy to keep adding pages
 ```
 
-说明：
-
-- `SKILL.md` 和 `references/` 是核心内容，Claude Code 可以使用。
-- `agents/openai.yaml` 是 Codex / OpenAI 的界面元数据，Claude Code 可以忽略，保留也不影响使用。
-- 普通 Claude 网页版通常不能直接安装本地 skill 文件夹；可以把 `SKILL.md` 内容复制到 Project instructions 或聊天上下文中使用。
-
-## 使用
-
-从零生成项目：
+Generate a project from HTML:
 
 ```text
-使用 $frontend-gen，从零搭建一个 Next.js 纯前端项目。
+Use frontend-gen to turn this HTML into a maintainable Next.js frontend project.
 
-项目类型：PC 响应式官网
-页面：首页、产品列表、产品详情、关于我们、联系我们
-要求：TypeScript、普通 CSS、组件封装、data 静态数据、lib 公共函数、可继续加页面
+Requirements:
+- Don't dump the HTML into one giant component
+- Extract routes, components, data, lib, and public images
+- Generate docs/frontend-map.md
+- Start the dev server and give me the local URL
 ```
 
-根据 HTML 生成项目：
+Keep adding pages:
 
 ```text
-使用 $frontend-gen，根据这个 HTML 生成一个可维护的 Next.js 前端项目。
+Use frontend-gen to add a /cases list page and a /cases/[slug] detail page to the current project.
 
-要求：
-- 不要把 HTML 原样塞进一个大组件
-- 提取路由、组件、data、lib、public 图片
-- 生成 docs/frontend-map.md
-- 启动 dev server，给我本地访问地址
+Requirements:
+- Read docs/frontend-map.md first
+- Reuse existing components and styles
+- Put case data in data/cases.ts
+- Update the navigation and docs/frontend-map.md
 ```
 
-继续追加页面：
+## Default output
 
-```text
-使用 $frontend-gen，给当前项目新增 /cases 案例列表页和 /cases/[slug] 案例详情页。
-
-要求：
-- 先读 docs/frontend-map.md
-- 复用现有组件和样式
-- 案例数据放 data/cases.ts
-- 更新导航和 docs/frontend-map.md
-```
-
-## 默认产物
-
-默认生成或维护这种结构：
+By default it generates or maintains this structure:
 
 ```text
 project/
@@ -105,44 +96,47 @@ project/
   lib/
   hooks/
   public/
-  docs/frontend-map.md
+  docs/
+    design-system.md
+    frontend-map.md
 ```
 
-默认技术选择：
+Default tech choices (recommended; not locked — see "Tech selection" in SKILL.md):
 
 - Next.js App Router
 - React
 - TypeScript
-- 普通 CSS
-- 静态 / 模拟数据
-- 本地状态
+- Plain CSS + `:root` design tokens
+- Static / mock data
+- Local state
 
-除非明确要求，否则不会主动引入后端、数据库、登录服务、支付服务、Tailwind、shadcn 或大型 UI 套件。
+It won't add a backend, database, auth, or payment services on its own. Tailwind, shadcn, or large UI kits are used only when the project type or your preference fits, or when an existing project already uses them.
 
-## 交付约定
+## Delivery conventions
 
-使用这个 Skill 时，Codex 应该：
+When this skill runs, it should:
 
-- 生成完整可运行项目，而不是代码片段
-- 抽取组件、数据和公共函数
-- 写清楚后续如何加页面、改文案、换图片
-- 跑类型检查和构建
-- 启动本地 dev server
-- 最终回复最后一行输出当前访问地址
+- Generate a complete, runnable project, not code fragments
+- Extract components, data, and shared functions
+- Lock a design-token system first, then keep every page consistent (no drift)
+- Cover responsive layout, interaction/motion, and a consistent icon set
+- Do SEO basics for websites/landing pages, and add tiered tests when there's real logic
+- Run type check and build, start the local dev server, and self-check & repair in the browser
+- End the final reply with the current URL on the last line
 
-示例：
-
-```text
-当前访问地址：http://localhost:3000
-```
-
-如果无法启动：
+Example:
 
 ```text
-当前访问地址：未启动（原因：依赖安装失败）
+Current URL: http://localhost:3000
 ```
 
-## Skill 文件结构
+If it can't start:
+
+```text
+Current URL: not started (reason: dependency install failed)
+```
+
+## Skill file structure
 
 ```text
 frontend-gen/
@@ -150,32 +144,36 @@ frontend-gen/
   agents/
     openai.yaml
   references/
-    design-craft.md
-    frontend-architecture.md
-    page-expansion.md
-    qiusite-lessons.md
-    quality-gates.md
-    source-intake.md
+    design-system.md         # lock a design-token system, reuse across pages, prevent drift
+    design-craft.md           # design feel + avoiding AI slop
+    interaction-motion.md     # restrained interaction, motion & a consistent icon set
+    source-intake.md          # organizing source material
+    frontend-architecture.md  # project architecture
+    page-expansion.md         # adding pages / preventing drift
+    testing.md                # tiered, optional testing
+    seo.md                    # SEO for websites/landing pages
+    extend-and-handoff.md     # deploy / backend / Figma handoff to other skills/MCP
+    quality-gates.md          # delivery acceptance
 ```
 
-## 适用范围
+## Scope
 
-适用：
+Good for:
 
-- PC 网页
-- 响应式官网
-- 移动 H5
-- 作品集
-- 工具型前端
-- 静态电商原型
-- 多页面内容站
+- PC web pages
+- Responsive websites
+- Mobile H5
+- Portfolios
+- Tool-style frontends
+- Static e-commerce prototypes
+- Multi-page content sites
 
-不适合单独完成：
+Beyond the frontend itself — **deployment, real backends/APIs, and Figma-to-UI reproduction** — the skill doesn't build these in-house, but it doesn't stop there either: it hands off to the right skill/MCP (or guides you) per `references/extend-and-handoff.md`, keeping a clean data seam so the frontend connects later. Things it deliberately leaves to a dedicated backend skill: real databases, payments, auth, and CMS admin backends.
 
-- 真实后端
-- 数据库
-- 支付
-- 登录鉴权服务
-- CMS 管理后台
+## Language
 
-这些能力可以后续在前端项目基础上单独设计和实现。
+The skill responds in the user's own language (Chinese, English, etc.) and keeps a CJK font stack in the design tokens, so it works well for both global and Chinese users.
+
+## License
+
+MIT

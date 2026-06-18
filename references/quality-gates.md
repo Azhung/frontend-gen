@@ -1,90 +1,90 @@
-# 交付验收
+# Delivery Acceptance
 
-交付前读这一份。目标是避免“看起来生成了，但不能继续用”。
+Read this before delivery. The goal is to avoid "looks like it was generated, but can't actually be used going forward".
 
-## 必过检查（面向小白，一次跑通）
+## Must-pass checks (beginner-friendly, runs out of the box)
 
-- 项目自带完整 `package.json`、`tsconfig.json`、`next.config.mjs`，依赖能装上，或沿用现有依赖。
-- `npm run typecheck` 或等价类型检查通过；没有脚本时运行 `npx tsc --noEmit`。
-- `npm run build` 通过；如果失败，说明具体原因。
-- 环境允许就真正启动本地 dev server 确认能打开并给出 URL（跑不通先修到跑通）；环境受限不能起服务时，至少类型/构建通过，并给出本地启动步骤与预期地址，如实说明未亲自启动。
-- 有逻辑/关键流程或用户要求时，已按 `references/testing.md` 补了对应层级测试且跑绿；纯静态站以浏览器自检替代。
-- 官网/落地页/内容站已按 `references/seo.md` 做了 SEO 基础（每页 metadata、OG 图、sitemap/robots、canonical、语义化、alt）。
-- 最终回复最后一行必须固定写当前运行访问地址：`当前访问地址：http://localhost:xxxx`。如果无法启动，写：`当前访问地址：未启动（原因：...）`。
-- 没有遗留 TODO、半成品页面、报错或需要用户自己补的步骤。
-- 每个页面在三档宽度（~375px 手机 / ~768px 平板 / ~1280px 桌面）下都不重叠、不溢出、不破图，且不出现意外的横向滚动（刻意的横滑组件除外）。
-- 响应式优先用流式（`clamp()` 字号、`auto-fit/minmax` 网格）；断点取 `:root` 统一令牌，不在各页随手写。
-- 移动端：可点区域 ≥ 44px，固定栏用 `env(safe-area-inset-bottom)`，高度用 `100dvh`，图片 `max-width:100%`。
+- The project ships with complete `package.json`, `tsconfig.json`, `next.config.mjs`; dependencies install successfully, or it reuses existing dependencies.
+- `npm run typecheck` or an equivalent type check passes; when there is no script, run `npx tsc --noEmit`.
+- `npm run build` passes; if it fails, explain the specific reason.
+- When the environment allows, actually start the local dev server to confirm it opens and provide a URL (fix it until it runs first); when the environment is restricted and the server can't be started, at least make type/build pass, provide local startup steps and the expected URL, and honestly state that you did not start it yourself.
+- When there is logic / critical flows or the user requires it, add tests at the corresponding level per `references/testing.md` and run them green; for purely static sites, substitute browser self-check.
+- For official sites / landing pages / content sites, the SEO basics have been done per `references/seo.md` (per-page metadata, OG image, sitemap/robots, canonical, semantics, alt).
+- The last line of the final reply must always state the current running URL: `Current URL: http://localhost:xxxx`. If it can't be started, write: `Current URL: not started (reason: ...)`.
+- No leftover TODOs, half-finished pages, errors, or steps the user has to complete themselves.
+- Every page, at three breakpoints (~375px phone / ~768px tablet / ~1280px desktop), has no overlap, no overflow, no broken images, and no unexpected horizontal scroll (except for deliberate horizontal-swipe components).
+- Prefer fluid responsiveness (`clamp()` font sizes, `auto-fit/minmax` grids); take breakpoints from the unified `:root` tokens, don't write them ad hoc on each page.
+- Mobile: tappable areas ≥ 44px, fixed bars use `env(safe-area-inset-bottom)`, height uses `100dvh`, images `max-width:100%`.
 
-## 自检与修复（交付前必跑，别只看"能启动"）
+## Self-check & repair (must run before delivery, don't just check that it "starts")
 
-"dev server 起来了"不等于"页面是对的"。启动后做一轮真实自检，发现问题就地修复再交付：
+"The dev server is up" does not equal "the page is correct". After starting, do a round of real self-check; when you find a problem, fix it in place before delivering:
 
-1. **浏览器自检**（不止构建/类型）：
-   - 控制台无报错/无红色警告（含 hydration、404 资源、未捕获异常）。
-   - 关键交互真的能用：导航跳转、表单提交校验、Tab/筛选/弹层/轮播都有真实响应，不是死的。
-   - 三档宽度（手机/平板/桌面）无重叠、溢出、破图、意外横向滚动。
-   - 图片、字体能加载；缺图有兜底，不是破图图标。
+1. **Browser self-check** (beyond build/types):
+   - No console errors / no red warnings (including hydration, 404 resources, uncaught exceptions).
+   - Key interactions actually work: navigation, form submission validation, tabs/filters/popovers/carousels all have real responses, not dead.
+   - At three breakpoints (phone/tablet/desktop), no overlap, overflow, broken images, or unexpected horizontal scroll.
+   - Images and fonts load; missing images have a fallback, not a broken-image icon.
 
-2. **发现 bug 就按流程修，别盲改**：
-   - **复现**：明确什么操作/什么宽度下出问题。
-   - **定位**：看 console 报错栈、网络面板、对应组件/数据/样式；先找根因，不是改表象。
-   - **修源码 → 重验**：改完重跑该场景，确认问题消失，且没引入新问题（顺手扫一眼相邻页面）。
+2. **When you find a bug, fix it by process, don't blindly patch**:
+   - **Reproduce**: pin down exactly which action / which width triggers the problem.
+   - **Locate**: look at the console error stack, the network panel, the corresponding component/data/style; find the root cause first, not the symptom.
+   - **Fix source → re-verify**: after the fix, rerun that scenario, confirm the problem is gone and no new problem was introduced (glance over adjacent pages while you're at it).
 
-3. **卡住时升级，不硬撑、不假装修好**：
-   - 同一问题改两次仍不好 → 缩小范围（二分定位、做最小复现）或换一种实现方案。
-   - 实在受限（如某能力纯前端做不到）→ 给出可用降级版，并在交付说明里**如实写清楚哪里没做到、为什么**，不要留隐藏的坏功能。
+3. **When stuck, escalate; don't force it or pretend it's fixed**:
+   - Same problem fixed twice and still not right → narrow the scope (bisect, build a minimal repro) or switch to a different implementation approach.
+   - Genuinely constrained (e.g. some capability is impossible in pure frontend) → provide a usable fallback version, and in the delivery notes **honestly write out what wasn't done and why**, don't leave hidden broken features.
 
-## 设计系统一致性检查（防漂移）
+## Design-system consistency check (prevent drift)
 
-- `docs/design-system.md` 存在，记录了气质、令牌、签名元素；`:root` 与之一致。
-- 颜色、字号、间距、圆角全部来自 `:root` 令牌；**全项目搜不到散落 hex 和魔法数字**（新页面没有临时调色/临时字号）。
-- 随机抽两个页面对比：配色、字号层级、间距节奏、圆角同源，没有开始漂移。
-- 签名元素全站统一，只在该处大胆，其余克制。
-- 续建场景：是在原项目上增量加（没有重搭项目、没有换审美）。
+- `docs/design-system.md` exists and records the personality, tokens, signature elements; `:root` is consistent with it.
+- Colors, font sizes, spacing, and corner radii all come from `:root` tokens; **no scattered hex or magic numbers can be found across the whole project** (new pages have no temporary color tweaks / temporary font sizes).
+- Randomly pick two pages and compare: palette, font-size hierarchy, spacing rhythm, and corner radii share the same source, with no drift starting.
+- Signature elements are unified site-wide, bold only there and restrained elsewhere.
+- Extension scenario: it's an incremental addition on the original project (no rebuilding the project, no changing the aesthetic).
 
-## 结构检查
+## Structure check
 
-- 路由页面没有变成巨大单文件。
-- 重复列表/卡片/分区由数据驱动。
-- 公共展示规则在 `lib/`。
-- 图片在 `public/`，路径集中管理。
-- 样式变量在 `globals.css`，没有多个互相冲突的样式系统。
-- `docs/frontend-map.md` 已更新：记录了本次新增的路由/组件/数据/令牌和新增页面方法。
+- Route pages have not turned into giant single files.
+- Repeated lists/cards/sections are data-driven.
+- Shared presentation rules live in `lib/`.
+- Images live in `public/`, with paths managed centrally.
+- Style variables live in `globals.css`, with no multiple conflicting style systems.
+- `docs/frontend-map.md` is updated: it records the routes/components/data/tokens added this time and the method for adding new pages.
 
-## 视觉与设计感检查
+## Visual & design-feel check
 
-- 已按 `references/design-craft.md` 的自检三问过一遍。
-- 参考资料里的品牌信号在首屏可见；抽掉内容只看骨架，界面仍认得出是“这个业务”，不是通用模板。
-- 没有去 AI 味清单里的特征：紫蓝渐变、渐变文字、满屏圆角大投影玻璃拟态、Hero→三卡→评价→CTA 套路、emoji 当图标、假占位文案。
-- 颜色来自 `:root` 变量：中性色阶 + 一个克制主强调色；字号字重有层级，间距走统一刻度。
-- 图片有稳定比例，不靠随机裁切撑布局。
-- 长标题、按钮文字、表单错误都能换行或收缩。
-- 固定导航、底部按钮、抽屉不遮挡正文。
+- Run through the three self-check questions in `references/design-craft.md` once.
+- The brand signals from the reference material are visible above the fold; strip the content and look at just the skeleton, and the interface is still recognizable as "this business", not a generic template.
+- None of the features on the avoid-AI-slop list: purple-blue gradients, gradient text, screen-full of rounded corners with big shadows and glassmorphism, the Hero→three-cards→testimonials→CTA formula, emoji as icons, fake placeholder copy.
+- Colors come from `:root` variables: a neutral scale + one restrained primary accent; font sizes and weights have hierarchy, spacing follows a unified scale.
+- Images have a stable aspect ratio, not relying on random cropping to prop up the layout.
+- Long titles, button text, and form errors can all wrap or shrink.
+- Fixed navigation, bottom buttons, and drawers don't obscure the body content.
 
-## 交互检查
+## Interaction check
 
-- 导航链接可点击，当前页状态正确。
-- 表单、Tab、筛选、弹层、轮播等可见控件不是假摆设，至少有合理本地状态。
-- 可交互元素有 hover/focus-visible/active/disabled，以及 空/加载/错误/缺图 兜底（见 `references/interaction-motion.md`）。
-- 动效克制：只一个主入场时刻、过渡用令牌时长、无满屏飞入；`prefers-reduced-motion` 生效。
-- 图标同族同尺寸同线宽，无 emoji 充当功能图标；装饰图标 `aria-hidden`，承载信息的有 `aria-label`。
+- Navigation links are clickable, and the current-page state is correct.
+- Visible controls such as forms, tabs, filters, popovers, and carousels are not fake props; they have at least reasonable local state.
+- Interactive elements have hover/focus-visible/active/disabled, plus empty/loading/error/missing-image fallbacks (see `references/interaction-motion.md`).
+- Motion is restrained: only one main entrance moment, transitions use token durations, no screen-full fly-ins; `prefers-reduced-motion` takes effect.
+- Icons share a consistent family, same size and same stroke width, with no emoji acting as functional icons; decorative icons use `aria-hidden`, information-bearing ones have `aria-label`.
 
-## 可访问性基础
+## Accessibility basics
 
-- 图片有合适 `alt`。
-- 表单 label 和错误提示能被读懂。
-- Tab 使用 `role="tablist"`、`role="tab"`、`aria-selected`。
-- 弹层使用 `role="dialog"` 和 `aria-modal="true"`。
-- 当前导航使用 `aria-current`。
+- Images have appropriate `alt`.
+- Form labels and error messages are understandable.
+- Tabs use `role="tablist"`, `role="tab"`, `aria-selected`.
+- Popovers use `role="dialog"` and `aria-modal="true"`.
+- Current navigation uses `aria-current`.
 
-## 交付说明
+## Delivery notes
 
-最终回复要包含：
+The final reply must include:
 
-- 做了什么。
-- 关键文件位置。
-- 验证命令和结果。
-- 本地访问 URL。
-- 后续加页面、加数据、换图片的入口。
-- 最后一行固定为：`当前访问地址：...`
+- What was done.
+- Locations of key files.
+- Verification commands and results.
+- Local access URL.
+- Entry points for adding pages, adding data, and swapping images later.
+- The last line is always: `Current URL: ...`

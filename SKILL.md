@@ -1,196 +1,198 @@
 ---
 name: frontend-gen
-description: 生成、重构、复刻或持续扩展纯前端 React/Next.js（或按需选 Vite/Astro/纯 HTML）项目的端到端技能。输入可以是参考 HTML、截图、Figma 设计稿/链接、图片、文案、需求、旧原型、页面清单，甚至只有一句话。只要用户想做或完善前端，都应使用本技能——官网、落地页、H5、作品集、工具站、后台前端、把原型或设计稿整理成项目、继续加页面、改版换皮、按 Figma 还原 UI、做响应式自适应、加 SEO、把项目部署上线、把假数据对接成真实后端接口——即使没明说"生成项目"也要触发。能力贯穿全流程：先查运行环境（含小白没装 Node 的引导）→ 按需求推荐技术栈让用户选 → 锁定可复用的设计令牌系统（不漂移、不像 AI 套模板）→ 生成或在现有项目上续建（用 frontend-map 作项目记忆、先读后改不重建）→ 按需分级测试 → 官网自动做 SEO → 自检并修复 bug。碰到部署上线、对接/生成后端、按 Figma 还原 UI 等超出纯前端的环节，会衔接或征得同意安装相应 skill/MCP 来完成，让用户从任何方向切入都能把项目做到完善上线。
+description: 【生成/完善前端项目 · Frontend project generator】从一句话、参考 HTML、截图、Figma 设计稿、文案或旧原型，生成、重构、复刻或持续扩展纯前端 React/Next.js（或按需 Vite/Astro/纯 HTML）项目。适用：官网、落地页、H5、作品集、工具站、后台前端、原型/设计稿转项目、继续加页面、改版、按 Figma 还原 UI、响应式自适应、加 SEO、部署上线、对接真实后端——即使没明说“生成项目”也应触发。先查环境(含没装 Node 的小白引导)→选技术栈→锁定可复用的设计令牌系统(不漂移、不像 AI 套模板)→生成或续建(frontend-map 项目记忆、先读后改不重建)→交互/动效/图标→分级测试→SEO→自检修复→部署/后端/Figma 衔接其他 skill 或 MCP。 EN: End-to-end skill to generate, refactor, clone, or continuously extend pure-frontend React/Next.js (or Vite/Astro/plain HTML) projects from a one-line idea, reference HTML, screenshot, Figma design, copy, or old prototype. Use for websites, landing pages, marketing pages, portfolios, dashboard UI, design-to-code, Figma-to-UI, adding pages, redesigns, responsive layout, SEO, deployment, and wiring real backends — trigger even when the user does not explicitly say “generate a project”. Locks a reusable design-token system (no drift, no generic AI look), treats the project as sustainable engineering (project memory, read-before-edit, never rebuild), covers interaction/motion/icons, testing, SEO and self-repair, and hands off to other skills/MCP for deploy, backend, and Figma.
 ---
 
-# 前端生成
+# Frontend Generation
 
-## 总览
+> **Language**: Respond in the user's own language (Chinese, English, etc.) and write UI copy in their language. For non-technical users, explain in plain words, not jargon. Keep a CJK font stack in the design tokens so Chinese/Japanese/Korean text renders well even when the rest is English.
 
-把任意输入——哪怕只有一句话——变成一个有设计感、能直接跑起来、还能继续维护的纯前端项目。默认产物是 Next.js App Router + TypeScript + 普通 CSS，使用静态/模拟数据、共享组件、全局样式变量、清晰路由和可持续追加页面的结构。
+## Overview
 
-四条核心原则，顺序就是优先级：
+Turn any input — even a single sentence — into a pure-frontend project that looks intentionally designed, runs immediately, and can be maintained going forward. The default output is Next.js App Router + TypeScript + plain CSS, using static/mock data, shared components, global style variables, clear routing, and a structure that supports continuously adding pages.
 
-1. **一次就能跑通。** 面向小白：交付的必须是一个完整、可安装、能 `npm run dev` 打开的项目，不留需要用户自己补的步骤、不留报错。
-2. **先有设计系统，再有页面。** 落任何样式前先锁定一套设计令牌系统（气质 + 配色 + 字体 + 刻度 + 一个签名元素），写进 `docs/design-system.md` 和 `:root`。这既是"有设计感、不像 AI 套模板"的来源，也是多页面不漂移的根基——后续每页都从这套系统取值，不另起审美。
-3. **可扩展、可维护。** 先建可扩展骨架再落细节：内容进 `data/`，规则进 `lib/`，重复 UI 进 `components/`。
-4. **当成可持续工程，不是一次性 demo。** `frontend-map.md` 是项目的记忆：动手前先读它判断是"新建"还是"续建"，收尾必更新它。续建复用既有令牌/外壳/组件，绝不重建项目、绝不每页发明新结构。
+Four core principles, in priority order:
 
-## 按需阅读
+1. **It runs on the first try.** Beginner-facing: what you deliver must be a complete, installable project that opens with `npm run dev`, with no steps left for the user to fill in and no errors.
+2. **System first, then pages.** Before writing any styles, lock in a design-token system (personality + color + type + scales + one signature element), written into `docs/design-system.md` and `:root`. This is both the source of "looks designed, not like an AI template" and the foundation for keeping many pages from drifting — every later page draws its values from this system instead of inventing a new aesthetic.
+3. **Extensible and maintainable.** Build an extensible skeleton first, then the details: content goes in `data/`, rules in `lib/`, repeated UI in `components/`.
+4. **Treat it as sustainable engineering, not a one-off demo.** `frontend-map.md` is the project's memory: read it first to decide "new build" vs "extend", and always update it at the end. When extending, reuse existing tokens/shell/components; never rebuild the project and never invent a new structure per page.
 
-- 设计令牌系统（开工先锁定、跨页复用、防漂移）：`references/design-system.md`
-- 设计手感（设计感 + 去 AI 味）：`references/design-craft.md`
-- 交互 / 动效 / 图标（克制、服务理解、统一图标族）：`references/interaction-motion.md`
-- 资料整理：`references/source-intake.md`
-- 项目架构：`references/frontend-architecture.md`
-- 继续加页面（续建/防漂移）：`references/page-expansion.md`
-- 测试（按需、分级、不破坏一次跑通）：`references/testing.md`
-- SEO 优化（官网/落地页必读、动手做）：`references/seo.md`
-- 扩展与协作（部署 / 后端 / Figma 还原，超范围时怎么衔接、装别的 skill/MCP）：`references/extend-and-handoff.md`
-- 交付验收：`references/quality-gates.md`
+## Read as needed
 
-## 何时使用
+- Design-token system (lock first, reuse across pages, prevent drift): `references/design-system.md`
+- Design craft (design feel + avoiding AI slop): `references/design-craft.md`
+- Interaction / motion / icons (restrained, serves understanding, consistent icon family): `references/interaction-motion.md`
+- Organizing source material: `references/source-intake.md`
+- Project architecture: `references/frontend-architecture.md`
+- Adding pages (extend / prevent drift): `references/page-expansion.md`
+- Testing (as needed, tiered, doesn't break runs-out-of-the-box): `references/testing.md`
+- SEO optimization (a must for websites/landing pages; actually do it): `references/seo.md`
+- Extend & hand off (deploy / backend / Figma — how to hand off and install other skills/MCP when out of scope): `references/extend-and-handoff.md`
+- Delivery acceptance: `references/quality-gates.md`
 
-- 用户给了参考 HTML、截图、图片、文案、页面需求、旧原型，要生成 React/Next 前端。
-- 用户要“纯前端项目”“先做静态版”“根据资料生成页面”“后续继续加页面”。
-- 用户要把一个单页原型整理成多页面项目架构。
-- 用户要给现有生成项目继续加页面、加组件、加数据。
+## When to use
 
-## 范围与衔接（超范围不拒绝，交接出去）
+- The user provided reference HTML, screenshots, images, copy, page requirements, or an old prototype, and wants a React/Next frontend.
+- The user wants a "pure-frontend project", "a static version first", "generate pages from materials", or "keep adding pages later".
+- The user wants to turn a single-page prototype into a multi-page project architecture.
+- The user wants to add pages, components, or data to an already-generated project.
 
-本技能核心是"生成/完善前端项目"。下面几类超出核心，但**不要止于"不做"——按 `references/extend-and-handoff.md` 衔接相应 skill/MCP 或引导用户**，让项目能一路做到上线：
+## Scope & handoff (don't refuse when out of scope — hand off)
 
-- **部署上线** → 按栈推荐最省事路径（静态 → Netlify/Cloudflare Pages，Next → Vercel），有部署 skill 就用、没有就给小白步骤或征得同意安装。
-- **真实后端 / 数据库 / 生成后端代码** → 本技能保持纯前端 + `lib/content.ts` 数据接缝，把后端交给后端类 skill；对接现有 API 时只换数据来源、组件不动。
-- **按 Figma 还原 UI** → 引导接入 Figma MCP（或用 figma 相关 skill），拉节点/变量/图片/图标，**映射进设计令牌系统**再落成可维护项目。
-- **已有成熟代码库且要求遵循其框架** → 先读现有项目约定，遵循它，不强套默认骨架。
-- 真要"像素级还原单张静态视觉稿"且不需要可维护项目时，才考虑用纯视觉还原流程；本技能关注的是"可维护项目生成"。
+The core of this skill is "generate/improve a frontend project". The following go beyond the core, but **don't stop at "I can't do that" — hand off to the right skill/MCP per `references/extend-and-handoff.md` or guide the user**, so the project can go all the way to launch:
 
-## 面向小白：一次跑通
+- **Deploy / go live** → recommend the simplest path per stack (static → Netlify/Cloudflare Pages, Next → Vercel); use a deploy skill if available, otherwise give the beginner steps or install one with consent.
+- **Real backend / database / generating backend code** → keep this skill pure-frontend plus the `lib/content.ts` data seam, and hand the backend to a backend skill; when wiring an existing API, only swap the data source — components don't change.
+- **Reproduce UI from Figma** → guide connecting the Figma MCP (or use a figma-related skill), pull nodes/variables/images/icons, **map them into the design-token system**, then build a maintainable project.
+- **An existing mature codebase that requires following its framework** → read the existing project's conventions first and follow them; don't force the default skeleton.
+- Only when the goal truly is "pixel-perfect reproduction of a single static visual" and a maintainable project isn't needed should you consider a pure visual-reproduction flow; this skill focuses on "maintainable project generation".
 
-用户大概率不懂代码，也不会自己补环境。交付物必须是一个开箱即用的完整项目：
+## Beginner-friendly: runs out of the box
 
-- **先查运行环境，别假设装了 Node**：动手前跑 `node -v && npm -v`。
-  - 没装/版本过低：用大白话引导安装，能代办就**征得同意后帮装**——macOS 用 Homebrew（`brew install node`）或 [nodejs.org](https://nodejs.org) 安装包（选 LTS）；Windows 用官网 LTS 安装包；Linux 用包管理器或 nvm。装不了（权限/环境受限）就给最简步骤 + 官网链接，并说明装完回来继续。
-  - 包管理器按现场来（有 pnpm/yarn 就用），别强求 npm；端口被占就换端口并告知。
-  - 纯静态单页方案（单个 HTML）**不需要 Node**——小白零环境时这也是一个合理兜底。
-- 不管输入多简略，都生成**完整可运行**的项目，不要只给片段、不要留 TODO 式半成品。
-- 输入只有一句话或很模糊时，**不要为了等澄清而停下**：根据内容选一个最合理的项目类型（官网 / H5 / 作品集 / 工具 / 列表+详情），把假设写进 `docs/frontend-map.md`，直接做出来。只有在“到底是什么类型的项目”完全无法判断、且会决定整体架构时才提一个问题。
-- 依赖要能装上、版本要能配齐：`package.json`、`tsconfig.json`、`next.config.mjs` 都给全。
-- 必须真正启动 dev server 验证能打开，再把本地地址给用户。跑不通就先修到跑通，不要把报错丢给用户。
-- 每次最终回复末尾必须固定附上当前运行访问地址，格式为：`当前访问地址：http://localhost:xxxx`。如果未能启动，写：`当前访问地址：未启动（原因：...）`。
-- 给用户的说明用大白话：怎么打开、改文案改图片去哪个文件，不要预设用户懂术语。
+The user likely doesn't code and won't fix the environment themselves. What you deliver must be a complete, ready-to-run project:
 
-## 默认判断
+- **Check the runtime environment first; don't assume Node is installed**: before starting, run `node -v && npm -v`.
+  - Not installed / too old: guide installation in plain language, and if you can do it for them, **install with their consent** — on macOS use Homebrew (`brew install node`) or the [nodejs.org](https://nodejs.org) installer (pick LTS); on Windows use the official LTS installer; on Linux use the package manager or nvm. If you can't (permissions/restricted environment), give the simplest steps + the official link and explain to come back once installed.
+  - Use whatever package manager is present (if pnpm/yarn exists, use it); don't force npm. If the port is taken, switch ports and say so.
+  - A pure static single-page approach (a single HTML file) **needs no Node** — a reasonable fallback when a beginner has zero environment.
+- No matter how brief the input, generate a **complete, runnable** project — don't give only fragments and don't leave TODO-style half-finished work.
+- When the input is one sentence or vague, **don't stop to wait for clarification**: pick the most reasonable project type from the content (website / H5 / portfolio / tool / list+detail), write the assumptions into `docs/frontend-map.md`, and just build it. Only ask one question when "what kind of project this even is" is genuinely undeterminable and would decide the overall architecture.
+- Dependencies must install and versions must be complete: provide `package.json`, `tsconfig.json`, `next.config.mjs` in full.
+- Actually start the dev server to verify it opens, then give the user the local URL. If it doesn't run, fix it until it does — don't hand errors to the user.
+- The final reply must always end with the current running URL, in the format: `Current URL: http://localhost:xxxx`. If it couldn't start, write: `Current URL: not started (reason: ...)`.
+- Explain things in plain language: how to open it, which file to edit to change copy or images — don't assume the user knows the terms.
 
-- **技术栈不锁死，按需推荐让用户选**：续建时先读现有项目、遵循它已用的栈与样式方案，不强行换。新建时根据项目类型给一个**推荐栈 + 1 个备选**让用户选；小白没明确选择就用推荐默认直接做（别卡着等）。选型见下方"技术选型"。
-- **默认推荐**（无明确偏好时）：Next.js App Router + TypeScript + 普通 CSS（产物一致、上手稳、SEO 友好）。
-- **样式按需**：默认纯 CSS + `:root` 令牌；当项目类型或用户偏好适合、或现有项目已用时，可选 Tailwind 等——别为"纯净"硬拒用户想要的方案。
-- 默认使用 TypeScript（除非用户/现有项目明确用 JS）。
-- 保持纯前端：静态数据、本地状态、模拟接口、`public/` 静态资源；不要擅自加后端、数据库、支付、登录服务。
-- 优先做可用页面，不做空泛落地页；除非用户明确要 landing page。
-- 资料不完整时，可以先生成合理版本，但内容、图片、数据必须集中管理，方便后续替换。
-- **默认自适应、移动优先**：每页都要在手机/平板/桌面三档宽度下成立；优先用流式（`clamp()`、`auto-fit/minmax`）少写断点，断点只取统一令牌档位。详见 `references/design-system.md` 响应式一节。
+## Defaults
 
-## 技术选型（新建时）
+- **Stack is not locked; recommend per need and let the user choose**: when extending, read the existing project first and follow the stack and styling it already uses; don't force a switch. For a new build, recommend a **stack + 1 alternative** by project type and let the user pick; if a beginner doesn't choose, use the recommended default and just build (don't stall). See "Tech selection" below.
+- **Default recommendation** (no clear preference): Next.js App Router + TypeScript + plain CSS (consistent output, reliable to start, SEO-friendly).
+- **Styling as needed**: default to plain CSS + `:root` tokens; when the project type or user preference fits, or the existing project already uses it, Tailwind etc. are fine — don't reject what the user wants for the sake of "purity".
+- Default to TypeScript (unless the user/existing project clearly uses JS).
+- Stay pure-frontend: static data, local state, mock APIs, `public/` static assets; don't add a backend, database, payments, or auth services on your own.
+- Prefer usable pages over vague landing pages, unless the user explicitly asks for a landing page.
+- When materials are incomplete, you may generate a reasonable version first, but content, images, and data must be centrally managed for easy replacement later.
+- **Responsive and mobile-first by default**: every page must hold up at three widths (phone/tablet/desktop); prefer fluid techniques (`clamp()`, `auto-fit/minmax`) and write fewer breakpoints, taking breakpoints only from the unified tokens. See the responsive section in `references/design-system.md`.
 
-先读现有项目就遵循它；新建才按类型推荐，给用户"推荐 + 备选"二选一，小白不选就用推荐项直接做：
+## Tech selection (for new builds)
 
-| 项目类型 | 推荐 | 备选 | 说明 |
+If there's an existing project, follow it; only for a new build recommend by type, giving the user a "recommended + alternative" pick — if a beginner doesn't choose, use the recommended one and build:
+
+| Project type | Recommended | Alternative | Notes |
 | --- | --- | --- | --- |
-| 官网 / 落地页 / 作品集（重 SEO/首屏）| Next.js App Router + 纯 CSS | + Tailwind | 需要 metadata/SSG/SEO，Next 最合适 |
-| 多页内容站 / 列表+详情 | Next.js App Router | Astro | 内容型、利于 SEO 和静态化 |
-| H5 / App-like 营销页 | Next.js `(tabs)` + 纯 CSS | Vite + React | 单设备、交互轻 |
-| 纯工具 / 单页交互（无 SEO 诉求）| Vite + React + TS | Next.js | 启动快、构建轻 |
-| 极简静态页（无构建诉求）| 单个 HTML + CSS + JS | Next.js | 别为一个静态页上重框架 |
+| Website / landing / portfolio (SEO/first-screen heavy) | Next.js App Router + plain CSS | + Tailwind | Needs metadata/SSG/SEO; Next fits best |
+| Multi-page content site / list+detail | Next.js App Router | Astro | Content-type, good for SEO and static generation |
+| H5 / app-like marketing page | Next.js `(tabs)` + plain CSS | Vite + React | Single device, light interaction |
+| Pure tool / single-page interaction (no SEO need) | Vite + React + TS | Next.js | Fast startup, lighter build |
+| Minimal static page (no build need) | Single HTML + CSS + JS | Next.js | Don't put a heavy framework on one static page |
 
-只在用户/现有项目适合时才用 Tailwind、UI 套件等；不要为"纯净"硬拒，也不要给小项目硬塞重框架。
+Use Tailwind, UI kits, etc. only when the user/existing project fits; don't reject them for "purity", and don't force a heavy framework onto a small project.
 
-## 设计默认
+## Design defaults
 
-设计感不是可选项，而且要"先成系统、再落页面"。新建项目时先读 `references/design-system.md` 锁定令牌系统，再读 `references/design-craft.md` 把握手感，并坚持：
+Design feel isn't optional, and it must be "system first, pages second". For a new project, read `references/design-system.md` to lock the token system, then `references/design-craft.md` for the craft, and stick to:
 
-- **先锁系统**：动手写样式前，先用一句话定气质，产出一套设计令牌（中性色阶 + 一个克制主强调色、字体角色配对、字号刻度、间距刻度、圆角/阴影/动效档位），并选定**一个"签名元素"**——这一处可以大胆，其余都安静克制。把系统写进 `docs/design-system.md` 和 `app/globals.css` 的 `:root`。
-- **跨页复用**：之后每个页面、每个组件都从这套令牌取值，不再临时调色、临时定字号。这是多页一致、不漂移的根本。
-- **两遍法**：令牌系统草拟完，先对照"三种 AI 默认审美"（清单见 `references/design-system.md`）自检再写代码，命中就改成贴这个业务的选择。
-- **签名 + 克制**：把大胆只花在签名元素一处，周围保持安静；避开紫蓝渐变、渐变文字、满屏圆角大投影玻璃拟态、Hero→三卡→评价→CTA 套路、emoji 当图标、假占位文案。
-- **自检**：把内容抽掉只看骨架，这套界面还应认得出是"这个业务"，而不是能套给任何业务的通用模板。
+- **Lock the system first**: before writing styles, set the personality in one sentence, produce a set of design tokens (neutral scale + one restrained primary accent, typeface pairing, type scale, spacing scale, radius/shadow/motion levels), and pick **one "signature element"** — bold there, quiet and restrained everywhere else. Write the system into `docs/design-system.md` and the `:root` of `app/globals.css`.
+- **Reuse across pages**: afterward every page and component draws values from these tokens, no ad-hoc color tweaks or one-off font sizes. This is the basis for multi-page consistency and no drift.
+- **Two-pass method**: once the tokens are drafted, first self-check against the "three generic AI default looks" (list in `references/design-system.md`), then write code; if you hit one, change it to a choice that fits this business.
+- **Signature + restraint**: spend boldness only on the one signature element and keep the surroundings quiet; avoid purple-blue gradients, gradient text, screen-full rounded corners with big shadows and glassmorphism, the Hero→three-cards→testimonials→CTA formula, emoji as icons, and fake placeholder copy.
+- **Self-check**: strip the content and look at just the skeleton — the interface should still be recognizable as "this business", not a generic template you could drop onto any business.
 
-## 工作流程
+## Workflow
 
-这是执行清单，不是建议。
+This is an execution checklist, not a suggestion.
 
-0. **先判断：新建 还是 续建（决定后面整条路径）**
-   - 当前目录/项目里**已有 `docs/frontend-map.md` 或 `package.json`** → 这是**续建**：先读 `docs/frontend-map.md` 和 `docs/design-system.md`，按 `references/page-expansion.md` 在现有项目上增量加页面/组件，**复用既有令牌与外壳，绝不重新搭项目、绝不另起一套审美**。然后跳到第 5 步之后的增量实现。
-   - 否则才是**新建**：走下面 1→7 完整流程。
-   - 判断不了就先看用户措辞："加一个 X 页 / 在现在的项目上…" = 续建；"做一个 X 站 / 按这个做个项目" = 新建。
+0. **First decide: new build or extend (this determines the whole path)**
+   - The current directory/project **already has `docs/frontend-map.md` or `package.json`** → this is **extend**: read `docs/frontend-map.md` and `docs/design-system.md` first, and per `references/page-expansion.md` add pages/components incrementally onto the existing project, **reusing existing tokens and shell — never re-scaffold the project, never start a new aesthetic**. Then jump to the incremental implementation after step 5.
+   - Otherwise it's a **new build**: follow the full 1→7 flow below.
+   - If you can't tell, read the user's wording: "add an X page / on the current project…" = extend; "build an X site / make a project from this" = new build.
 
-1. **确认 brief**
-   - 看参考 HTML、截图、图片、文案、需求、品牌信息、页面清单和目标设备。
-   - 如果本地有文件，先读文件再设计。
-   - 如果涉及线上 URL 或最新信息，先联网核验。
-   - 输入很简略时也别停：选一个最合理的项目类型，写下假设直接做。
-   - 缺信息但不阻塞时，明确写下假设并继续。
+1. **Confirm the brief**
+   - Look at reference HTML, screenshots, images, copy, requirements, brand info, the page list, and the target device.
+   - If there are local files, read them before designing.
+   - If online URLs or latest info are involved, verify online first.
+   - Don't stop when the input is brief: pick the most reasonable project type, write down assumptions, and just build.
+   - When info is missing but not blocking, write the assumptions explicitly and continue.
 
-2. **锁定设计系统（先成系统再落页面）**
-   - 读 `references/design-system.md` 和 `references/design-craft.md`。
-   - 用一句话写下项目气质，产出整套令牌：中性色阶 + 一个主强调色、字体角色配对、字号刻度、间距刻度、圆角/阴影/动效档位、**响应式令牌（断点 + 容器 + 流式字号/网格）**；并选定**一个签名元素**。
-   - 对照"三种 AI 默认审美"自检，确认每个选择都贴这个业务、不是通用默认相。
-   - 把这套系统**同时写进** `docs/design-system.md`（人读的决策记录）和 `app/globals.css` 的 `:root`（机器用的令牌）。后续所有页面只从这里取值。
+2. **Lock the design system (system first, then pages)**
+   - Read `references/design-system.md` and `references/design-craft.md`.
+   - Write the project's personality in one sentence, and produce the full token set: neutral scale + one primary accent, typeface pairing, type scale, spacing scale, radius/shadow/motion levels, **responsive tokens (breakpoints + container + fluid type/grid)**; and pick **one signature element**.
+   - Self-check against the "three generic AI default looks" to confirm each choice fits this business, not a generic default.
+   - Write the system into **both** `docs/design-system.md` (the human-readable decision record) and the `:root` of `app/globals.css` (the machine-facing tokens). Every later page draws only from here.
 
-3. **定路由**
-   - 先写简短页面地图。
-   - 路由命名贴近业务，不要只按技术方便命名。
-   - 判断哪些页面共享导航、页头、页脚、底部 Tab 或外壳布局。
+3. **Define routing**
+   - Write a short page map first.
+   - Name routes close to the business, not just for technical convenience.
+   - Decide which pages share navigation, header, footer, bottom tabs, or shell layout.
 
-4. **搭骨架**
-   - 使用 `app/`、`components/`、`lib/`、`data/`、`public/`。
-   - 重复内容先放进类型化数据文件，不要散落在 JSX。
-   - 展示规则、映射规则、格式化规则放进 `lib/`。
-   - 样式只用第 2 步锁定在 `:root` 的令牌，不在组件里写散落 hex 或魔法数字；缺什么先回去补进令牌系统，而不是临时硬编码。
+4. **Build the skeleton**
+   - Use `app/`, `components/`, `lib/`, `data/`, `public/`.
+   - Put repeated content into typed data files first; don't scatter it across JSX.
+   - Put presentation rules, mapping rules, and formatting rules in `lib/`.
+   - Styles use only the tokens locked into `:root` in step 2; don't write scattered hex or magic numbers in components; if something is missing, add a level back into the token system rather than hardcoding it ad hoc.
 
-5. **先做公共 UI（含交互/动效/图标）**
-   - 先建页面外壳、导航、按钮、卡片、分区、媒体容器、空状态、表单控件。
-   - 同一段 UI 第二次出现就抽组件；页面级基础结构可提前抽。
-   - 全部用设计变量，做齐 `hover/focus-visible/active/disabled` 与 空/加载/错误态。
-   - 按 `references/interaction-motion.md`：动效**克制**（只一个主入场时刻、用令牌时长、尊重 `prefers-reduced-motion`，不满屏飞入）；图标用**统一图标族**（如 lucide），自定义/品牌图标画内联 SVG，**不用 emoji 当功能图标**。
+5. **Build shared UI first (including interaction/motion/icons)**
+   - Build the page shell, navigation, buttons, cards, sections, media containers, empty states, and form controls first.
+   - Extract a component the second time a piece of UI appears; page-level base structures can be extracted early.
+   - Use design variables throughout, with complete `hover/focus-visible/active/disabled` plus empty/loading/error states.
+   - Per `references/interaction-motion.md`: keep motion **restrained** (only one main entrance moment, token durations, respect `prefers-reduced-motion`, no full-screen fly-ins); use a **consistent icon family** (e.g. lucide), draw custom/brand icons as inline SVG, and **don't use emoji as functional icons**.
 
-6. **实现页面**
-   - 每个 route page 读取集中数据，组合共享组件。
-   - 卡片、图片、固定栏、网格必须有稳定尺寸或响应式约束。
-   - 缺文案、缺图片、缺数据时要有合理占位和空状态。
-   - 按内容编排板块顺序和疏密，不要套通用模板排版。
+6. **Implement pages**
+   - Each route page reads centralized data and composes shared components.
+   - Cards, images, fixed bars, and grids must have stable sizes or responsive constraints.
+   - Provide reasonable placeholders and empty states for missing copy, images, or data.
+   - Arrange section order and density by content; don't apply a generic template layout.
 
-7. **验证交付 + 更新项目记忆（必须跑通、必须留记忆）**
-   - 跑类型检查/构建；没有脚本就 `npx tsc --noEmit`。
-   - **测试（按需，别破坏一次跑通）**：项目有逻辑/关键流程或用户要求时，按 `references/testing.md` 分级补测试并跑绿；纯静态站可只靠浏览器自检。
-   - **SEO（官网/落地页/内容站）**：按 `references/seo.md` 把 SEO 基础**直接做掉**（每页 metadata、OG 图、sitemap/robots、语义化、alt），不是只提示。
-   - **能起就起 dev server 验证**：环境允许就真正启动、确认能打开、给本地地址，跑不通先修到跑通；环境受限（如沙箱不能起服务）时，至少类型/构建通过，并给用户清晰的本地启动步骤与预期地址，**如实说明未亲自启动**。
-   - 按 `references/quality-gates.md` 的"自检与修复"自检（console 无报错、关键交互可用、三档宽度不破版），发现 bug 就"复现→定位→修源码→重验"，别只看"能启动"；卡住就缩小范围或给降级版并如实说明。
-   - 再按该文件的交付检查表（设计系统一致性、设计感、去 AI 味、SEO）过一遍。
-   - **收尾闭环（可持续的关键）**：把这次新增/改动的路由、组件、数据、令牌变化写回 `docs/frontend-map.md`；令牌系统有调整则同步更新 `docs/design-system.md`。下次续建就靠这两份文件接力，不会重起炉灶。
-   - 用大白话说明以后加页面、加数据、换图片改哪个文件。
-   - 最终回复最后一行必须是当前访问地址：`当前访问地址：http://localhost:xxxx`；没有地址时也必须说明：`当前访问地址：未启动（原因：...）`。
+7. **Verify delivery + update project memory (must run; must leave a memory)**
+   - Run type check / build; if there's no script, `npx tsc --noEmit`.
+   - **Testing (as needed, don't break runs-out-of-the-box)**: when the project has logic/critical flows or the user requires it, add tiered tests per `references/testing.md` and run them green; a purely static site can rely on browser self-check only.
+   - **SEO (websites/landing/content sites)**: per `references/seo.md`, **actually do** the SEO basics (per-page metadata, OG image, sitemap/robots, semantics, alt), not just advise.
+   - **Start the dev server to verify when you can**: if the environment allows, actually start it, confirm it opens, give the local URL, and fix until it runs; when the environment is restricted (e.g. a sandbox can't start servers), at least pass type/build, give the user clear local startup steps and the expected URL, and **honestly state you didn't start it yourself**.
+   - Run the "self-check & repair" in `references/quality-gates.md` (no console errors, key interactions work, no breakage at three widths); when you find a bug, "reproduce → locate → fix source → re-verify", don't just check that it "starts"; when stuck, narrow scope or ship a degraded version and say so honestly.
+   - Then run the delivery checklist in that file (design-system consistency, design feel, avoiding AI slop, SEO).
+   - **Closing loop (the key to sustainability)**: write the routes/components/data/token changes from this round back into `docs/frontend-map.md`; if the token system changed, update `docs/design-system.md` too. The next extension relies on these two files to carry on, with no starting over.
+   - Explain in plain language which file to edit later to add pages, add data, or swap images.
+   - The last line of the final reply must be the current URL: `Current URL: http://localhost:xxxx`; if there's no URL, also state it: `Current URL: not started (reason: ...)`.
 
-## 文件放置
+## File placement
 
-| 需求 | 默认位置 |
+| Need | Default location |
 | --- | --- |
-| 路由页面 | `app/<route>/page.tsx` |
-| 共享布局 | `app/layout.tsx`、`app/(site)/layout.tsx`、`app/(tabs)/layout.tsx` |
-| 通用组件 | `components/` 或 `app/components/` |
-| 某个业务域组件 | `components/<domain>/` |
-| 静态内容/模拟数据 | `data/` |
-| 公共 JS/纯函数 | `lib/` |
-| 客户端状态 hook | `hooks/` |
-| 图片/字体/静态资源 | `public/` |
-| 全局样式变量（令牌落点）| `app/globals.css` 的 `:root` |
-| 设计令牌决策记录 | `docs/design-system.md` |
-| 项目记忆 / 后续维护说明 | `docs/frontend-map.md` |
+| Route page | `app/<route>/page.tsx` |
+| Shared layout | `app/layout.tsx`, `app/(site)/layout.tsx`, `app/(tabs)/layout.tsx` |
+| Generic component | `components/` or `app/components/` |
+| A business-domain component | `components/<domain>/` |
+| Static content / mock data | `data/` |
+| Shared JS / pure functions | `lib/` |
+| Client-state hook | `hooks/` |
+| Images/fonts/static assets | `public/` |
+| Global style variables (where tokens live) | `:root` in `app/globals.css` |
+| Design-token decision record | `docs/design-system.md` |
+| Project memory / maintenance notes | `docs/frontend-map.md` |
 
-## 交付物
+## Deliverables
 
-- 可运行的前端项目或现有项目增量修改。
-- 路由页面、共享组件、静态数据、公共 helper、全局样式。
-- `docs/frontend-map.md`：记录路由、组件、数据、资产和新增页面方法。
-- 本地运行地址；如果无法启动，说明阻塞原因和已完成内容。
-- 最终回复末尾固定一行当前访问地址。
+- A runnable frontend project, or incremental changes to an existing project.
+- Route pages, shared components, static data, shared helpers, global styles.
+- `docs/frontend-map.md`: records routes, components, data, assets, and how to add new pages.
+- The local run URL; if it can't start, explain the blocker and what was completed.
+- The final reply ends with one line stating the current URL.
 
-## 常见错误
+## Common mistakes
 
-| 错误 | 正确做法 |
+| Mistake | Right approach |
 | --- | --- |
-| 把参考 HTML 原样塞进一个组件 | 拆成路由、数据、组件和 helper。 |
-| 只做眼前一个页面 | 同时搭好后续加页面的结构。 |
-| 文案全写死在 JSX | 可复用内容放进 `data/`。 |
-| 生成风格和参考资料完全无关 | 从参考中提炼颜色、排版、间距和组件节奏。 |
-| 套通用模板（紫蓝渐变、满屏圆角投影、Hero→三卡→CTA） | 先定气质，按内容编排，参照 `references/design-craft.md` 去 AI 味。 |
-| 因为输入太简略就停下来反复追问 | 选最合理的项目类型，写下假设，直接做出完整项目。 |
-| 交付一个装不上或打不开的项目 | 配齐依赖与配置，真正启动 dev server 验证后再交付。 |
-| 前端需求却加一堆后端复杂度 | 用静态/模拟数据和本地状态。 |
-| 每个新页面都单独发明结构 | 复用路由地图、页面外壳、组件和数据契约。 |
-| 不写令牌系统、直接边写边调色调字号 | 先锁 `docs/design-system.md` + `:root` 令牌，所有页面取值复用。 |
-| 续建时无视现有项目、重新搭一套（或换一套审美）| 先读 `frontend-map.md` + `design-system.md`，沿用令牌与外壳增量加。 |
-| 新页面临时加 hex / 魔法数字 / 新字号 | 回令牌系统补一档，再引用；保持跨页一致、不漂移。 |
-| 大胆元素铺满整页 | 大胆只花在一个签名元素，其余安静克制。 |
-| 收尾不更新 `frontend-map.md` | 每次交付都把新增路由/组件/数据/令牌写回，留给下次接力。 |
+| Dumping reference HTML into one component | Split into routes, data, components, and helpers. |
+| Building only the page in front of you | Set up the structure for adding pages later at the same time. |
+| Hardcoding all copy in JSX | Put reusable content into `data/`. |
+| Generating a style unrelated to the reference material | Extract colors, typography, spacing, and component rhythm from the reference. |
+| Applying a generic template (purple-blue gradients, screen-full rounded shadows, Hero→three-cards→CTA) | Set the personality first, arrange by content, follow `references/design-craft.md` to avoid AI slop. |
+| Stopping to ask repeatedly because input is too brief | Pick the most reasonable project type, write down assumptions, and just build a complete project. |
+| Delivering a project that won't install or won't open | Provide complete deps and config, actually start the dev server to verify before delivering. |
+| Adding backend complexity to a frontend need | Use static/mock data and local state. |
+| Inventing a separate structure for every new page | Reuse the route map, page shell, components, and data contracts. |
+| Not writing a token system, tweaking colors/sizes as you go | Lock `docs/design-system.md` + `:root` tokens first; every page draws from them. |
+| When extending, ignoring the existing project and rebuilding (or switching aesthetics) | Read `frontend-map.md` + `design-system.md` first, reuse tokens and shell, add incrementally. |
+| Adding ad-hoc hex / magic numbers / new font sizes on a new page | Add a level back into the token system, then reference it; keep cross-page consistency, no drift. |
+| Bold elements covering the whole page | Spend boldness on one signature element only, restrained elsewhere. |
+| Not updating `frontend-map.md` at the end | Every delivery writes the added routes/components/data/tokens back, to carry on next time. |

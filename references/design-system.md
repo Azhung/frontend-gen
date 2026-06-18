@@ -1,165 +1,165 @@
-# 设计令牌系统（先成系统，再落页面）
+# Design-Token System (build the system first, then the pages)
 
-新建项目时，写第一行样式前先读这一份。
-核心理念：**不要边做边调样式，而是先锁定一套"设计令牌系统"，之后每个页面都从系统取值。**
-这一步同时解决两件事——① 让界面有设计感、不像 AI 套模板（系统是审美的来源）；② 让多页面长期一致、不漂移（系统是可持续的根基）。设计系统是这个项目所有视觉决策的**单一事实来源**。
+When starting a new project, read this before writing your first line of styles.
+Core idea: **Don't tweak styles as you go—first lock in a "design-token system", and then have every page draw its values from that system.**
+This step solves two things at once: (1) it makes the interface look intentionally designed rather than like AI slop (the system is the source of the aesthetic); (2) it keeps many pages consistent over the long run and prevents drift (the system is a sustainable foundation). The design system is the **single source of truth** for every visual decision in this project.
 
-## 为什么先成系统
+## Why build the system first
 
-边写边定颜色字号，结果是：每页风格略有出入，越加越花，三五个页面后就"散"了，回头统一成本极高。
-先把决策固化成令牌，后续只是"引用"，不再"决策"——这才是能持续追加几十个页面还保持一致的方式。
+If you define colors and type sizes as you write each page, the result is: every page is slightly off from the others, it gets busier the more you add, and after three to five pages it falls apart—making it extremely costly to unify afterward.
+Lock the decisions into tokens up front, and afterward you're only "referencing", not "deciding"—this is what lets you keep adding dozens of pages while staying consistent.
 
-## 第一步：一句话气质
+## Step 1: A one-line personality
 
-先写下这个项目的气质，它统领后面所有取值：
+First write down this project's personality; it governs every value that follows:
 
-- 冷静专业 / 温暖亲切 / 高端克制 / 热闹活泼 / 锋利现代 / 复古手作……
-- 从参考资料的品牌信号（logo、主色、字体、语气、图片质感）和目标人群第一感受里提炼。
-- 一句话写不出来，就先别写代码——气质不清，令牌必乱。
+- Calm and professional / warm and friendly / high-end and restrained / lively and energetic / sharp and modern / vintage and handcrafted…
+- Distill it from the brand signals in the reference material (logo, primary color, typeface, tone, image texture) and from the target audience's first impression.
+- If you can't write it in one sentence, don't write code yet—if the personality is unclear, the tokens will be a mess.
 
-## 第二步：产出整套令牌
+## Step 2: Produce the full set of tokens
 
-按顺序定，每一档都要有理由，别堆装饰：
+Define them in order, with a reason for each level; don't pile on decoration:
 
-1. **配色**：先中性色阶（背景、表面、边框、正文、弱文字 5 档左右），再**一个**克制主强调色，最后 2–3 个状态色。强调色只用在真正要被点/被注意处。颜色总数克制。
-2. **字体**：选有性格的搭配——一个标题字、一个正文字，不要全站一个默认无衬线。中文项目明确中文字体栈，别让中文用英文字体兜底发虚。
-3. **字号刻度**：定一条比例（如 13 / 15 / 18 / 24 / 32 / 44），标题与正文要有明显落差。
-4. **间距刻度**：一套固定步长（如 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64），杜绝随手魔法数字。
-5. **圆角 / 阴影 / 动效**：圆角统一 1–2 档；阴影少而轻；过渡 150–250ms，缓动自然，尊重 `prefers-reduced-motion`。
-6. **签名元素**：选定**一个**最能代表这个业务气质的记忆点——它可以是独特的标题排版、一种重复的结构母题、一个特别的卡片/分隔/图形处理、一段克制的入场动效。**大胆只花在这一处，其余全部安静克制**（"花钱要花在刀刃上"）。没有签名元素的页面就是"安全但平庸"的 AI 默认相。
+1. **Color**: First a neutral scale (background, surface, border, body text, muted text—about 5 levels), then **one** restrained primary accent color, and finally 2–3 status colors. Use the accent only where something truly needs to be clicked or noticed. Keep the total number of colors restrained.
+2. **Typefaces**: Choose a pairing with character—one display typeface, one body typeface; don't use a single default sans-serif everywhere. For CJK projects, explicitly specify the CJK font stack; don't let CJK text fall back to a Latin font and look thin and washed out.
+3. **Type scale**: Set one ratio (e.g. 13 / 15 / 18 / 24 / 32 / 44), with a clear gap between headings and body text.
+4. **Spacing scale**: One fixed step set (e.g. 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64); eliminate ad-hoc magic numbers.
+5. **Radius / shadow / motion**: Unify radius to 1–2 levels; keep shadows few and light; transitions 150–250ms with natural easing, respecting `prefers-reduced-motion`.
+6. **Signature element**: Pick **one** memorable touch that best represents this business's personality—it could be a distinctive heading layout, a repeating structural motif, a special card/divider/graphic treatment, or a restrained entrance animation. **Spend boldly on this one spot only, and keep everything else quiet and restrained** ("spend where it counts"). A page with no signature element is the "safe but mediocre" AI default look.
 
-## 第三步：两遍法自检（再写代码）
+## Step 3: Two-pass self-check (before writing code)
 
-令牌草拟完，先别急着写页面。对照下面"三种 AI 一眼假默认相"过一遍，命中就改成贴这个业务的选择：
+Once the tokens are drafted, don't rush into building pages. Run through the "three generic AI-generated default looks" below; if you hit one, change it to a choice that fits this business:
 
-| AI 默认相 | 特征 | 怎么破 |
+| AI default look | Traits | How to break it |
 | --- | --- | --- |
-| ① 文艺杂志相 | 米色底(#F4F1EA 类) + 高对比衬线大标题 + 陶土/赤陶强调色 | 只在气质确实是"温暖手作/出版"时才用；否则换贴业务的中性底与主色 |
-| ② 暗黑霓虹相 | 近黑底 + 单一荧光绿/朱红强调 + 玻璃拟态 | 除非是"科技/夜间/游戏"气质，否则浅色克制同样高级且更安全 |
-| ③ 报纸发丝相 | 通栏发丝线 + 零圆角 + 高密度报纸式排版 | 只在"严肃资讯/编辑"气质成立时用；否则给留白和层级 |
+| (1) Literary-magazine look | Beige background (#F4F1EA-ish) + high-contrast serif headlines + terracotta/clay accent | Use only when the personality really is "warm/handcrafted/editorial"; otherwise switch to a neutral background and primary color that fit the business |
+| (2) Dark-neon look | Near-black background + a single neon-green/vermilion accent + glassmorphism | Unless the personality is "tech/nighttime/gaming", a restrained light theme is just as premium and safer |
+| (3) Newspaper hairline look | Full-width hairline rules + zero radius + dense newspaper-style layout | Use only when a "serious news/editorial" personality holds up; otherwise give it whitespace and hierarchy |
 
-再问一句：**如果把这套令牌套到一个完全不同的业务上也毫无违和，那它太通用了，重做。** 好的系统应该"长得像这个业务"。
+Then ask one more thing: **If you could drop this set of tokens onto a completely different business and it wouldn't feel out of place, then it's too generic—redo it.** A good system should "look like this business".
 
-## 第四步：双写持久化
+## Step 4: Persist in two places
 
-系统定稿后**同时**写两处，二者必须一致：
+Once the system is finalized, write it in **both** places at the same time; the two must match:
 
-- `app/globals.css` 的 `:root`：机器用的令牌，页面/组件只引用变量，不写散落 hex / 魔法数字。
-- `docs/design-system.md`：人读的决策记录，说明"气质是什么、为什么选这些色/字/刻度、签名元素是什么"。续建时先读它，照着取值，不另起审美。
+- The `:root` in `app/globals.css`: machine-facing tokens. Pages/components reference variables only—no scattered hex or magic numbers.
+- `docs/design-system.md`: a human-readable record of decisions, explaining "what the personality is, why these colors/typefaces/scales were chosen, what the signature element is". When you extend the project later, read this first and draw values from it; don't start a new aesthetic.
 
-### `:root` 令牌示例
+### `:root` token example
 
 ```css
 :root {
-  /* 中性色阶 */
+  /* Neutral scale */
   --bg: #ffffff;
   --surface: #f6f5f2;
   --border: #e7e3da;
   --text: #1a1a1a;
   --muted: #6b6b6b;
-  /* 主强调色（从品牌/内容提取，不是默认蓝紫）*/
+  /* Primary accent (extracted from brand/content, not the default blue-purple) */
   --accent: #b5502f;
   --accent-weak: #f3e3dc;
-  /* 状态色 */
+  /* Status colors */
   --ok: #2e7d32; --warn: #b26a00; --danger: #c0392b;
-  /* 字体 */
+  /* Typefaces */
   --font-display: "Source Han Serif SC", Georgia, serif;
   --font-sans: -apple-system, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-  /* 字号刻度 */
+  /* Type scale */
   --step-0: .8125rem; --step-1: .9375rem; --step-2: 1.125rem;
   --step-3: 1.5rem; --step-4: 2rem; --step-5: 2.75rem;
   --leading-body: 1.6; --leading-tight: 1.15;
-  /* 间距刻度 */
+  /* Spacing scale */
   --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px;
   --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px;
-  /* 圆角 / 阴影 / 容器 / 动效 / 图标 */
+  /* Radius / shadow / container / motion / icons */
   --radius: 8px; --radius-lg: 16px;
   --shadow: 0 1px 2px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.05);
   --container: 1120px;
-  --ease: cubic-bezier(.2,.6,.2,1); --dur: 200ms;   /* 动效令牌：过渡统一用这两个 */
-  --icon-size: 20px; --icon-stroke: 1.75;           /* 图标统一尺寸/线宽 */
+  --ease: cubic-bezier(.2,.6,.2,1); --dur: 200ms;   /* Motion tokens: use these two for all transitions */
+  --icon-size: 20px; --icon-stroke: 1.75;           /* Unified icon size/stroke width */
 }
 @media (prefers-reduced-motion: reduce){ :root{ --dur: 0ms; } }
 ```
 
-### `docs/design-system.md` 模板
+### `docs/design-system.md` template
 
 ```markdown
-# 设计系统
+# Design System
 
-## 气质
-一句话：________（例：高端克制的石材工艺品牌）
+## Personality
+One line: ________ (e.g. a high-end, restrained stone-craft brand)
 
-## 签名元素
-________（例：标题用衬线大字 + 一条贴着内容的细赤陶下划线；全站仅此一处张力）
+## Signature element
+________ (e.g. serif display headings + a thin terracotta underline hugging the content; the only point of tension across the whole site)
 
-## 配色（语义 → 值）
-- 背景/表面/边框/正文/弱文字：…
-- 主强调色：…（来源：品牌 logo 提取）
-- 状态色：…
+## Color (semantic → value)
+- Background/surface/border/body/muted: …
+- Primary accent: … (source: extracted from the brand logo)
+- Status colors: …
 
-## 字体
-- 标题：… 正文：…（中文字体栈：…）
+## Typefaces
+- Display: … Body: … (CJK font stack: …)
 
-## 刻度
-- 字号：… 间距：… 圆角：… 动效：…
+## Scales
+- Type: … Spacing: … Radius: … Motion: …
 
-## 用法约定
-- 所有颜色/间距/字号一律用 :root 变量，禁止散落硬编码。
-- 新增需求先在此补一档，再到组件引用。
+## Usage conventions
+- All colors/spacing/type sizes must use :root variables; no scattered hardcoded values.
+- For a new requirement, first add a level here, then reference it in the component.
 ```
 
-## 响应式令牌与规范（自适应是一等公民）
+## Responsive tokens and conventions (responsive is a first-class citizen)
 
-自适应不是最后补的，而是锁进令牌、每页都遵守的系统能力。默认**移动优先**：先写窄屏单列，再用 `min-width` 媒体查询往大屏加列、加间距。
+Responsive isn't tacked on at the end; it's locked into the tokens and followed on every page as a system capability. Default to **mobile-first**: write the narrow-screen single column first, then use `min-width` media queries to add columns and spacing for larger screens.
 
-### 响应式令牌（并入 `:root`）
+### Responsive tokens (merge into `:root`)
 
 ```css
 :root {
-  /* 断点（统一档位，别每页随手写）*/
-  --bp-sm: 480px;   /* 大手机 */
-  --bp-md: 768px;   /* 平板 */
-  --bp-lg: 1024px;  /* 桌面 */
+  /* Breakpoints (unified levels; don't write ad-hoc ones per page) */
+  --bp-sm: 480px;   /* large phone */
+  --bp-md: 768px;   /* tablet */
+  --bp-lg: 1024px;  /* desktop */
   --bp-xl: 1280px;
-  /* 容器与两侧安全留白 */
+  /* Container and side safe padding */
   --container: 1120px;
   --gutter: clamp(16px, 4vw, 40px);
-  /* 流式字号：随屏幕在 min~max 间平滑缩放，不用一堆媒体查询调字号 */
+  /* Fluid type: scales smoothly between min~max with the screen, no need for a pile of media queries to adjust sizes */
   --step-3: clamp(1.25rem, 1rem + 1.2vw, 1.5rem);
   --step-4: clamp(1.6rem, 1.1rem + 2.2vw, 2rem);
   --step-5: clamp(2rem, 1.2rem + 3.5vw, 2.75rem);
 }
 ```
 
-### 三个核心模式（够覆盖绝大多数页面）
+### Three core patterns (enough to cover the vast majority of pages)
 
 ```css
-/* 1) 居中容器 + 两侧留白 */
+/* 1) Centered container + side padding */
 .container { width: 100%; max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
 
-/* 2) 流式网格：空间够就多列，不够自动换行——不用写一堆断点 */
+/* 2) Fluid grid: more columns when there's room, auto-wrap when there isn't—no pile of breakpoints needed */
 .grid { display: grid; gap: var(--s-5); grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
 
-/* 3) 移动优先 + min-width 渐进增强 */
-.cols { display: grid; gap: var(--s-4); }              /* 窄屏单列 */
-@media (min-width: 768px){ .cols { grid-template-columns: 1fr 1fr; } }   /* 平板两列 */
-@media (min-width: 1024px){ .cols { grid-template-columns: 1fr 1fr 1fr; } } /* 桌面三列 */
+/* 3) Mobile-first + min-width progressive enhancement */
+.cols { display: grid; gap: var(--s-4); }              /* narrow screen, single column */
+@media (min-width: 768px){ .cols { grid-template-columns: 1fr 1fr; } }   /* tablet, two columns */
+@media (min-width: 1024px){ .cols { grid-template-columns: 1fr 1fr 1fr; } } /* desktop, three columns */
 ```
 
-### 规范
+### Conventions
 
-- **移动优先**：基础样式写窄屏，用 `min-width` 往上加；不要 PC 优先再往下砍。
-- **优先用流式而非断点**：能用 `clamp()`（字号/间距）和 `auto-fit/minmax`（网格）自适应的，就少写媒体查询；断点只用统一令牌档位。
-- **媒体不破版**：图片 `max-width:100%;height:auto`；卡片/媒体定宽高比（`aspect-ratio`）。
-- **触屏友好**：可点区域 ≥ 44px；固定栏/底部导航用 `env(safe-area-inset-bottom)`，移动端高度用 `100dvh` 而非 `100vh`。
-- **每页必须在三档宽度下都成立**：~375px（手机）/ ~768px（平板）/ ~1280px（桌面）都不重叠、不溢出、不破图。
-- 横向滚动是 bug（除非刻意的轮播/横滑组件）。
+- **Mobile-first**: write base styles for narrow screens and add upward with `min-width`; don't go PC-first and cut down.
+- **Prefer fluid over breakpoints**: when you can adapt with `clamp()` (type/spacing) and `auto-fit/minmax` (grids), write fewer media queries; breakpoints should only use the unified token levels.
+- **Media that doesn't break layout**: images `max-width:100%;height:auto`; give cards/media a fixed aspect ratio (`aspect-ratio`).
+- **Touch-friendly**: tappable areas ≥ 44px; for fixed bars/bottom navigation use `env(safe-area-inset-bottom)`, and on mobile use `100dvh` for height rather than `100vh`.
+- **Every page must hold up at three widths**: ~375px (phone) / ~768px (tablet) / ~1280px (desktop)—no overlap, no overflow, no broken images.
+- Horizontal scrolling is a bug (unless it's an intentional carousel/horizontal-swipe component).
 
-## 跨页复用与防漂移（可持续核心）
+## Cross-page reuse and preventing drift (the core of sustainability)
 
-- 后续每个页面、每个组件**只引用令牌**，不临时调色、不临时定字号。
-- 缺一个值（比如需要一个更大的标题档）→ **回令牌系统补一档**，再在组件引用；不要就地硬编码。
-- 签名元素全站保持同一种处理，别每页换花样。
-- 续建前必读 `docs/design-system.md`；它就是后来者"对齐审美"的依据。
-- 自检：随机翻两个页面，颜色、字号层级、间距节奏、圆角是否完全同源？不同源就是开始漂移，立即收敛回令牌。
+- Every subsequent page and component **references tokens only**; don't tweak colors or set type sizes on the spot.
+- Missing a value (e.g. you need a larger heading level) → **go back to the token system and add a level**, then reference it in the component; don't hardcode it in place.
+- Keep the signature element treated the same way across the whole site; don't vary it page to page.
+- Before you extend an existing project, you must read `docs/design-system.md`; it's the basis for newcomers to "align on the aesthetic".
+- Self-check: randomly flip through two pages—are the colors, type hierarchy, spacing rhythm, and radii all from the same source? If not, drift has begun; converge back to the tokens immediately.

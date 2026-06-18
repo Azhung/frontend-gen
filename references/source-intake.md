@@ -1,83 +1,83 @@
-# 资料整理
+# Organizing source material
 
-当用户提供 HTML、截图、图片、文案、产品说明或零散需求时，先读这一份。
+When the user provides HTML, screenshots, images, copy, product descriptions, or scattered requirements, read this first.
 
-## 输入类型
+## Input types
 
-| 输入 | 处理方式 |
+| Input | How to handle |
 | --- | --- |
-| 参考 HTML | 提取结构、文案、重复模块、内联样式意图；不要原样塞进组件。 |
-| 截图/视觉稿 | 提取版式、层级、颜色、图片需求、交互状态。 |
-| 图片素材 | 归类到 logo、品牌、产品、头像、背景、图标、装饰。 |
-| 文案 | 保留核心表达，拆成页面、区块、卡片、FAQ、按钮。 |
-| 需求清单 | 转成路由、组件、数据模型、交互和验收点。 |
-| 旧原型 | 保留用户路径，重构为现代 Next 结构。 |
+| Reference HTML | Extract structure, copy, repeated modules, and inline-style intent; do not paste it verbatim into components. |
+| Screenshot/visual mockup | Extract layout, hierarchy, colors, image needs, and interaction states. |
+| Image assets | Sort into logo, brand, product, avatar, background, icon, decoration. |
+| Copy | Keep the core message, break it into pages, sections, cards, FAQs, buttons. |
+| Requirements list | Turn it into routes, components, data models, interactions, and acceptance points. |
+| Old prototype | Keep the user paths, refactor into a modern Next structure. |
 
-## 先看什么
+## What to look at first
 
-- 页面名称、菜单、按钮、表单、商品/服务列表、重复分区。
-- 品牌线索：logo、颜色、字体、语气、图片风格、图标风格。
-- 交互要求：Tab、筛选、抽屉、表单、轮播、收藏、本地状态、导航。
-- 目标设备：移动 H5、桌面网站、响应式 Web App、作品集、运营后台。
-- 藏在文案里的数据模型：商品、服务、团队、案例、评价、FAQ、步骤、价格、地址。
-- 需要后续新增页面的地方：分类页、详情页、案例页、文章页、表单流程、个人中心。
+- Page names, menus, buttons, forms, product/service lists, repeated sections.
+- Brand signals: logo, colors, fonts, tone, image style, icon style.
+- Interaction requirements: tabs, filters, drawers, forms, carousels, favorites, local state, navigation.
+- Target device: mobile H5, desktop site, responsive web app, portfolio, operations dashboard.
+- The data model hidden in the copy: products, services, team, cases, reviews, FAQ, steps, pricing, addresses.
+- Places that will need new pages later: category pages, detail pages, case pages, article pages, form flows, account center.
 
-## 转成内部 brief
+## Turn it into an internal brief
 
-编码前先整理成短 brief：
+Before coding, organize it into a short brief:
 
 ```text
-目标：
-用户：
-设备优先级：
-路由：
-共享外壳：
-核心数据模型：
-可用图片：
-缺失图片/占位：
-交互：
-验收重点：
-不做范围：
+Goal:
+Users:
+Device priority:
+Routes:
+Shared shell:
+Core data models:
+Available images:
+Missing images/placeholders:
+Interactions:
+Acceptance focus:
+Out of scope:
 ```
 
-用户已经明确要实现时，缺失信息不高风险就直接合理假设并继续。
+When the user has clearly asked to implement it, if the missing information is low-risk, just make reasonable assumptions and continue.
 
-## 何时提问
+## When to ask
 
-只在这些信息缺失且会明显影响架构时提问：
+Only ask when the following information is missing and would clearly affect the architecture:
 
-- 项目到底是 H5 app、官网、后台、工具还是作品集。
-- 是否必须匹配某个视觉来源。
-- 页面清单完全不明确。
-- 是否允许用本地 mock 数据。
+- Whether the project is actually an H5 app, a website, a dashboard, a tool, or a portfolio.
+- Whether it must match a specific visual source.
+- The page list is entirely unclear.
+- Whether local mock data is allowed.
 
-其他轻微缺口用假设推进，并把假设写进交付说明或 `docs/frontend-map.md`。
+For other minor gaps, proceed on assumptions and record those assumptions in the delivery notes or `docs/frontend-map.md`.
 
-## HTML 转 React
+## HTML to React
 
-- 保留内容层级、分区顺序和关键标签。
-- 重复 HTML 变成数据映射组件。
-- inline style 收敛到 CSS 变量或局部 class。
-- 站内链接用 Next `Link`。
-- 本地图片放进 `public/`；多处使用的图片路径集中在数据文件。
-- 不保留脆弱绝对定位，除非视觉效果必须依赖它。
-- 表格、列表、卡片、步骤条、导航都先抽数据形状，再写组件。
-- 旧 HTML 里的 class 名只保留有业务语义的；表现型 class 重新设计。
+- Preserve the content hierarchy, section order, and key tags.
+- Repeated HTML becomes a data-mapped component.
+- Converge inline styles into CSS variables or local classes.
+- Use the Next `Link` for in-site links.
+- Put local images in `public/`; centralize image paths used in multiple places in a data file.
+- Do not keep fragile absolute positioning unless the visual effect depends on it.
+- For tables, lists, cards, steppers, and navigation, extract the data shape first, then write the component.
+- Keep only the class names from the old HTML that carry business semantics; redesign presentational classes.
 
-## 图片处理
+## Image handling
 
-- 优先使用用户给的真实图片。
-- 图片放 `public/images/` 或业务目录，如 `public/brand/`。
-- 多卡片图片路径放进数据文件。
-- 图片容器必须有稳定宽高比。
-- 缺图片时做设计化占位，不要出现破图图标。
-- 不要用深色遮罩、模糊裁切或抽象背景掩盖用户需要看清的真实产品/对象。
-- 对重要图片写清 alt 文案；纯装饰图可空 alt。
+- Prefer the real images the user provided.
+- Put images in `public/images/` or a business directory such as `public/brand/`.
+- Put the image paths for multiple cards in a data file.
+- Image containers must have a stable aspect ratio.
+- When an image is missing, use a designed placeholder; do not show a broken-image icon.
+- Do not use dark overlays, blurred crops, or abstract backgrounds to hide the real product/object the user needs to see clearly.
+- Write clear alt text for important images; decorative images can have empty alt.
 
-## 文案处理
+## Copy handling
 
-- 用户给的文案默认原样保留。
-- 文案太少时，用同语气补最少量连接文字。
-- 不要在界面里写“如何使用这个界面”的说明文。
-- 中文项目默认用简洁中文标签和行动导向的空状态。
-- 按 `data/` 组织文案：站点信息、导航、首页区块、列表项、FAQ、联系信息分开。
+- By default, keep the copy the user provides verbatim.
+- When there is too little copy, add the minimum amount of connecting text in the same tone.
+- Do not write instructions about "how to use this interface" in the UI.
+- For Chinese projects, default to concise Chinese labels and action-oriented empty states.
+- Organize copy by `data/`: keep site info, navigation, homepage sections, list items, FAQ, and contact info separate.

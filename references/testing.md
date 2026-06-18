@@ -1,50 +1,50 @@
-# 测试（按需、分级，不破坏"一次跑通"）
+# Testing (on demand, tiered, without breaking "runs out of the box")
 
-要不要写测试、写到什么程度，取决于项目里有没有"会出错的逻辑"。**测试是增强项，绝不能让小白拿到一个装不上/跑不起的项目**——所以默认按下面分级，别无脑全套。
+Whether to write tests, and how far to go, depends on whether the project contains "logic that can go wrong." **Tests are an enhancement; they must never leave a beginner with a project that won't install or won't run**—so by default follow the tiers below, and don't mindlessly apply the full suite.
 
-## 先判断要不要测
+## First decide whether to test
 
-| 项目情况 | 测试策略 |
+| Project situation | Testing strategy |
 | --- | --- |
-| 纯展示静态站（官网、作品集、落地页，几乎没逻辑）| **可不写自动化测试**，靠 `quality-gates.md` 的浏览器自检即可 |
-| 有纯逻辑（`lib/` 里的格式化、筛选、slug 查询、价格/分数计算）| 给 `lib/` 写**单元测试**（性价比最高） |
-| 有关键可复用组件（表单、卡片列表、Tab、弹层）| 视情况加**组件测试** |
-| 有核心用户流程（结算、多步表单、登录态切换、复杂交互）| 给最关键 1–2 条流程加 **E2E** |
-| 用户**明确要求**测试覆盖 | 按其要求上对应层级 |
+| Purely presentational static site (official site, portfolio, landing page, almost no logic) | **Can skip automated tests**; rely on the browser self-check from `quality-gates.md` |
+| Has pure logic (formatting, filtering, slug lookup, price/score calculation in `lib/`) | Write **unit tests** for `lib/` (best value for the effort) |
+| Has key reusable components (forms, card lists, tabs, modals) | Add **component tests** as appropriate |
+| Has core user flows (checkout, multi-step forms, login state switching, complex interactions) | Add **E2E** for the 1–2 most critical flows |
+| User **explicitly requests** test coverage | Apply the corresponding tier per their request |
 
-原则：**先保证开箱即跑，再谈测试**。不要为一个静态官网硬塞 Playwright，把小白卡在环境配置上。
+Principle: **ensure it runs out of the box first, then talk about tests**. Don't force Playwright onto a static official site and get the beginner stuck on environment setup.
 
-## 各层级怎么做（保持轻量）
+## How to do each tier (stay lightweight)
 
-### 单元测试（首选，覆盖 `lib/` 纯函数）
-- 工具：**Vitest**（与 Vite/Next 都好集成，启动快）。
-- 只测纯函数的输入→输出和边界（空数组、找不到、异常输入）。
-- 脚本：`"test": "vitest run"`、`"test:watch": "vitest"`。
+### Unit tests (first choice, covering pure functions in `lib/`)
+- Tool: **Vitest** (integrates well with both Vite/Next, fast startup).
+- Test only the input→output and edge cases of pure functions (empty arrays, not found, invalid input).
+- Scripts: `"test": "vitest run"`, `"test:watch": "vitest"`.
 
 ```ts
 import { describe, it, expect } from "vitest";
 import { bySlug } from "../lib/content";
 
 describe("bySlug", () => {
-  it("命中返回对应项", () => {
+  it("returns the matching item on a hit", () => {
     expect(bySlug([{ slug: "a" }], "a")).toEqual({ slug: "a" });
   });
-  it("找不到返回 null", () => {
+  it("returns null when not found", () => {
     expect(bySlug([{ slug: "a" }], "x")).toBeNull();
   });
 });
 ```
 
-### 组件测试（可选）
-- 工具：Vitest + `@testing-library/react`。
-- 只测有真实行为的组件：渲染关键内容、点击/输入后状态变化、空状态出现。不测纯静态展示组件。
+### Component tests (optional)
+- Tool: Vitest + `@testing-library/react`.
+- Test only components with real behavior: rendering key content, state changes after click/input, empty states appearing. Don't test purely static presentational components.
 
-### E2E（仅复杂交互项目）
-- 工具：**Playwright**。只覆盖最核心的 1–2 条用户路径（如"首页→详情→提交表单"）。
-- 别追求全站覆盖；E2E 慢且脆，覆盖关键路径即可。
+### E2E (only for complex-interaction projects)
+- Tool: **Playwright**. Cover only the 1–2 most core user paths (e.g., "home → detail → submit form").
+- Don't aim for full-site coverage; E2E is slow and brittle, so covering the critical paths is enough.
 
-## 交付约定
-- 写了测试就在 `package.json` 配好脚本，并在交付说明里写"怎么跑测试（如 `npm test`）"。
-- 交付前**至少把写了的测试跑通**（绿）；跑不过先修。
-- 没写自动化测试的项目，必须按 `quality-gates.md` 的"自检与修复"做一轮真实浏览器自检替代。
-- 在 `docs/frontend-map.md` 记一句"测了什么、怎么跑"，方便后续接手。
+## Delivery conventions
+- If you wrote tests, configure the scripts in `package.json` and write "how to run the tests (e.g. `npm test`)" in the delivery notes.
+- Before delivery, **at least make the tests you wrote pass** (green); if they fail, fix them first.
+- For projects without automated tests, you must do a round of real-browser self-check per the "self-check and fix" section of `quality-gates.md` as a substitute.
+- Note in `docs/frontend-map.md` a line on "what was tested and how to run it," to make later handoff easier.

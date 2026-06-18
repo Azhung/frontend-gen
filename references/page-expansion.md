@@ -1,63 +1,63 @@
-# 继续加页面
+# Adding More Pages
 
-给已有生成项目继续加页面时读这一份。续建的第一原则：**接力，不重起**——在现有项目上增量加，绝不重新搭项目、绝不换一套审美。
+Read this when continuing to add pages to an existing generated project. The first principle of extending a project: **carry the baton, don't restart**—add incrementally on top of the existing project, never rebuild the project from scratch, never switch to a different aesthetic.
 
-## 续建前必做（防漂移）
+## Must-Do Before Extending (Prevent Drift)
 
-1. **先读两份记忆**：`docs/frontend-map.md`（路由/组件/数据现状）和 `docs/design-system.md`（气质 + 令牌 + 签名元素）。
-2. **沿用既有令牌**：新页面的颜色、字号、间距、圆角全部用现有 `:root` 变量，不临时调色、不引入新审美。缺一档就回令牌系统补一档再用。
-3. **签名元素保持一致**：全站同一种处理，别这页一个花样。
-4. 收尾**必须更新** `frontend-map.md`（新增的路由/组件/数据/令牌），令牌有变同步更 `design-system.md`。
-5. 自检：新页面和老页面随机对比，是否完全同源？开始漂移就收敛回令牌。
+1. **Read the two memory files first**: `docs/frontend-map.md` (current routes/components/data) and `docs/design-system.md` (character + tokens + signature element).
+2. **Reuse existing tokens**: a new page's colors, font sizes, spacing, and border radii must all use the existing `:root` variables—no ad-hoc color tweaks, no introducing a new aesthetic. If a step is missing, add it back to the token system first, then use it.
+3. **Keep signature elements consistent**: use the same treatment site-wide, don't do something different on this page.
+4. On finishing, you **must update** `frontend-map.md` (newly added routes/components/data/tokens), and sync `design-system.md` if tokens changed.
+5. Self-check: randomly compare the new page against older pages—are they fully from the same source? If drift starts, converge back to the tokens.
 
-## 先判断扩展类型
+## Determine the Expansion Type First
 
-| 需求 | 做法 |
+| Need | Approach |
 | --- | --- |
-| 加一个静态页面 | 新增 route + 复用 Section/UI + 更新导航。 |
-| 加一个列表页 | 先扩 `data/` 类型和数据，再建列表组件。 |
-| 加详情页 | 建 `[slug]` route，用 `lib/content.ts` 查数据。 |
-| 加流程页 | 拆成步骤数据、表单组件、状态 helper。 |
-| 加很多同类页面 | 先抽数据模型和通用布局，再批量建 route。 |
+| Add a static page | Add a route + reuse Section/UI + update navigation. |
+| Add a list page | Extend the `data/` types and data first, then build the list component. |
+| Add a detail page | Build a `[slug]` route, query data with `lib/content.ts`. |
+| Add a flow/form page | Split into step data, form components, and state helpers. |
+| Add many pages of the same kind | Extract the data model and shared layout first, then batch-create routes. |
 
-## 扩展流程
+## Expansion Flow
 
-1. 有 `docs/frontend-map.md` 就先读。
-2. 找最相近的已有 route 和共享组件。
-3. 判断是静态页、列表页、详情页、表单页还是流程页。
-4. 先扩数据模型，再写页面 JSX。
-5. 复用现有页面外壳、导航、分区组件和 UI primitives。
-6. 需要被访问时，才更新导航。
-7. 补 metadata、空状态和缺图兜底。
-8. 跑类型检查/构建。
-9. 更新 `docs/frontend-map.md`。
+1. If `docs/frontend-map.md` exists, read it first.
+2. Find the closest existing route and shared components.
+3. Decide whether it's a static page, list page, detail page, form page, or flow page.
+4. Extend the data model first, then write the page JSX.
+5. Reuse the existing page shell, navigation, section components, and UI primitives.
+6. Update navigation only when it needs to be reachable.
+7. Add metadata, empty states, and missing-image fallbacks.
+8. Run type checking/build.
+9. Update `docs/frontend-map.md`.
 
-## 路由选择
+## Choosing a Route
 
-| 页面类型 | 路由模式 |
+| Page Type | Route Pattern |
 | --- | --- |
-| 主导航页面 | `app/<name>/page.tsx` 或 `app/(tabs)/<name>/page.tsx` |
-| 详情页 | `app/<domain>/[slug]/page.tsx` |
-| 表单/流程页 | `app/<action>/page.tsx` |
-| 静态说明/帮助页 | `app/<topic>/page.tsx` |
-| 嵌套栏目 | `app/<domain>/<section>/page.tsx` |
+| Main navigation page | `app/<name>/page.tsx` or `app/(tabs)/<name>/page.tsx` |
+| Detail page | `app/<domain>/[slug]/page.tsx` |
+| Form/flow page | `app/<action>/page.tsx` |
+| Static info/help page | `app/<topic>/page.tsx` |
+| Nested section | `app/<domain>/<section>/page.tsx` |
 
-没有共享布局、导航或 metadata 需求时，不要随便建 route group。
+Don't create a route group casually when there's no need for a shared layout, navigation, or metadata.
 
-## 组件抽取
+## Extracting Components
 
-出现这些情况就抽组件：
+Extract a component when these arise:
 
-- 同一分区出现在两个页面。
-- 卡片、列表、表格有重复数据形状。
-- 某个视觉基础件以后大概率复用。
-- 一个页面有多个独立交互。
+- The same section appears on two pages.
+- Cards, lists, or tables have a repeated data shape.
+- A visual primitive is likely to be reused later.
+- A page has multiple independent interactions.
 
-真正唯一的页面文案和小布局可以留在 page 内。
+Genuinely unique page copy and small layouts can stay inside the page.
 
-## 详情页模式
+## Detail Page Pattern
 
-推荐结构：
+Recommended structure:
 
 ```text
 data/items.ts
@@ -68,24 +68,24 @@ components/items/ItemCard.tsx
 components/items/ItemDetail.tsx
 ```
 
-详情页找不到 slug 时，使用 `notFound()` 或项目已有空状态，不要渲染半空页面。
+When a detail page can't find the slug, use `notFound()` or the project's existing empty state—don't render a half-empty page.
 
-## 数据扩展
+## Extending Data
 
-- 新字段只有兼容旧数据时才设 optional。
-- 优先用 `slug`、`label`、`title`、`description`、`image`、`href`、`tags`、`meta`。
-- 有顺序的内容用数组。
-- 让运营/用户改文案时尽量不用碰组件结构。
-- 新增枚举型字段时，把展示文案放进 helper，不要在多个组件里写三元表达式。
+- Make a new field optional only when it must be compatible with old data.
+- Prefer `slug`, `label`, `title`, `description`, `image`, `href`, `tags`, `meta`.
+- Use arrays for ordered content.
+- Let ops/users edit copy without touching the component structure as much as possible.
+- When adding an enum-type field, put the display text in a helper—don't write ternary expressions across multiple components.
 
-## 回归检查
+## Regression Checks
 
-- 导航高亮仍然正确。
-- 固定头部/底部不遮挡内容。
-- 卡片有稳定高度或宽高比。
-- 长标题换行正常。
-- 缺图片不破版。
-- 移动端和桌面端都合理。
-- 新页面刷新直达可用。
-- 新增数据不会破坏旧组件。
-- `docs/frontend-map.md` 和真实路由一致。
+- Navigation highlighting is still correct.
+- Fixed headers/footers don't obscure content.
+- Cards have a stable height or aspect ratio.
+- Long titles wrap correctly.
+- Missing images don't break the layout.
+- Both mobile and desktop are reasonable.
+- A new page works when refreshed/accessed directly.
+- Newly added data doesn't break old components.
+- `docs/frontend-map.md` matches the real routes.

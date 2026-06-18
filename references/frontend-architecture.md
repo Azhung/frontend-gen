@@ -1,19 +1,19 @@
-# 项目架构
+# Project Architecture
 
-生成新纯前端项目时读这一份。下面以默认推荐栈 **Next.js App Router + TS + 纯 CSS** 为例；若按 SKILL.md「技术选型」选了别的栈（Vite/Astro/单 HTML 或加了 Tailwind），骨架与命名按该栈的社区约定走，但"路由清晰、数据可编辑、组件可复用、样式有令牌、公共逻辑可测、新页面有固定追加法"这些**目标不变**。
+Read this when generating a new pure-frontend project. The examples below use the default recommended stack **Next.js App Router + TS + plain CSS**; if you chose a different stack per SKILL.md "Tech Selection" (Vite/Astro/single HTML, or added Tailwind), follow that stack's community conventions for the skeleton and naming, but the **goals stay the same**: clear routing, editable data, reusable components, tokenized styles, testable shared logic, and a fixed method for appending new pages.
 
-## 架构目标
+## Architecture Goals
 
-生成的不是“单页 demo”，而是可继续开发的前端项目：
+What you generate is not a "single-page demo" but a frontend project that can continue to be developed:
 
-- 路由清晰。
-- 数据可编辑。
-- 组件可复用。
-- 样式有变量和命名规则。
-- 公共 JS 可测试。
-- 新页面有固定追加方法。
+- Clear routing.
+- Editable data.
+- Reusable components.
+- Styles with variables and naming rules.
+- Testable shared JS.
+- A fixed method for appending new pages.
 
-## 推荐骨架
+## Recommended Skeleton
 
 ```text
 project/
@@ -48,9 +48,9 @@ project/
     frontend-map.md
 ```
 
-`docs/design-system.md` 是设计令牌的决策记录（见 `references/design-system.md`），`docs/frontend-map.md` 是项目记忆。两份都是"完整项目/持续加页面"交付物的一部分。
+`docs/design-system.md` is the decision record for the design tokens (see `references/design-system.md`), and `docs/frontend-map.md` is the project memory. Both are part of the "complete project / continuously adding pages" deliverable.
 
-移动端 H5 / App-like 项目可用路由组：
+Mobile H5 / App-like projects can use route groups:
 
 ```text
 app/
@@ -63,9 +63,9 @@ app/
   product/[slug]/page.tsx
 ```
 
-## 默认依赖
+## Default Dependencies
 
-尽量少依赖：
+Keep dependencies to a minimum:
 
 - `next`
 - `react`
@@ -75,9 +75,9 @@ app/
 - `@types/react`
 - `@types/react-dom`
 
-如果项目已有图标库就复用；允许新增时优先 `lucide-react`。
+If the project already has an icon library, reuse it; when adding one is allowed, prefer `lucide-react`.
 
-默认脚本：
+Default scripts:
 
 ```json
 {
@@ -90,9 +90,9 @@ app/
 }
 ```
 
-## 数据契约
+## Data Contract
 
-重复 UI 先定义类型化数据：
+For repeated UI, define typed data first:
 
 ```ts
 export type NavItem = {
@@ -109,54 +109,54 @@ export type CardItem = {
 };
 ```
 
-使用稳定 `id` 和 `slug`，让后续加详情页不用重写组件契约。
+Use stable `id` and `slug` so that adding detail pages later does not require rewriting the component contract.
 
-推荐数据文件：
+Recommended data files:
 
-| 文件 | 内容 |
+| File | Content |
 | --- | --- |
-| `data/site.ts` | 站点名、描述、联系方式、社媒、SEO 默认值。 |
-| `data/navigation.ts` | 顶部导航、底部导航、页脚导航。 |
-| `data/pages.ts` | 页面区块和静态文案。 |
-| `data/items.ts` | 商品、案例、文章、服务等列表数据。 |
+| `data/site.ts` | Site name, description, contact, social media, SEO defaults. |
+| `data/navigation.ts` | Top navigation, bottom navigation, footer navigation. |
+| `data/pages.ts` | Page sections and static copy. |
+| `data/items.ts` | List data such as products, case studies, articles, services. |
 
-数据字段要贴近业务，但保留常用通用字段：`id`、`slug`、`title`、`description`、`image`、`href`、`tags`、`meta`。
+Data fields should stay close to the business, but keep common generic fields: `id`, `slug`, `title`, `description`, `image`, `href`, `tags`, `meta`.
 
-## 组件边界
+## Component Boundaries
 
-| 类型 | 负责什么 |
+| Type | Responsible for |
 | --- | --- |
-| Route page | metadata、路由组合、选择数据。 |
-| Layout | 页头、导航、页脚、Tab、页面外壳。 |
-| Section | Hero、图库、功能列表、FAQ 等页面分区。 |
-| UI primitive | Button、Input、Sheet、Tabs、Card、Badge、EmptyState。 |
-| Pure helper | 格式化、筛选、slug 查询、分组、展示标签。 |
-| Client component | 状态、浏览器 API、动画、本地存储、表单交互。 |
+| Route page | metadata, route composition, selecting data. |
+| Layout | header, navigation, footer, tabs, page shell. |
+| Section | page sections such as Hero, gallery, feature list, FAQ. |
+| UI primitive | Button, Input, Sheet, Tabs, Card, Badge, EmptyState. |
+| Pure helper | formatting, filtering, slug lookup, grouping, display labels. |
+| Client component | state, browser APIs, animation, local storage, form interactions. |
 
-默认用 Server Component。只有需要状态、事件、effect、浏览器 API 时才加 `'use client'`。
+Use Server Components by default. Only add `'use client'` when you need state, events, effects, or browser APIs.
 
-## 路由规范
+## Routing Conventions
 
-- 首页：`app/page.tsx`。
-- 主导航页：`app/<name>/page.tsx`。
-- App-like Tab：`app/(tabs)/<name>/page.tsx` + `app/(tabs)/layout.tsx`。
-- 详情页：`app/<domain>/[slug]/page.tsx`。
-- 表单/流程页：`app/<action>/page.tsx`。
-- 静态说明页：`app/<topic>/page.tsx`。
+- Home: `app/page.tsx`.
+- Main nav pages: `app/<name>/page.tsx`.
+- App-like tabs: `app/(tabs)/<name>/page.tsx` + `app/(tabs)/layout.tsx`.
+- Detail pages: `app/<domain>/[slug]/page.tsx`.
+- Form/flow pages: `app/<action>/page.tsx`.
+- Static info pages: `app/<topic>/page.tsx`.
 
-每个页面尽量只做三件事：选数据、组合组件、声明 metadata。复杂交互下放给 Client Component。
+Each page should ideally do only three things: select data, compose components, and declare metadata. Push complex interactions down into Client Components.
 
-## CSS 系统
+## CSS System
 
-`app/globals.css` 负责：
+`app/globals.css` is responsible for:
 
-- `:root` 变量：颜色、文字、间距、圆角、阴影、容器宽度。
-- 基础字体和页面背景。
-- 共享布局 class。
-- UI 基础组件 class。
-- 页面/业务域前缀 class。
+- `:root` variables: colors, text, spacing, radius, shadows, container width.
+- Base font and page background.
+- Shared layout classes.
+- UI base component classes.
+- Page / business-domain prefixed classes.
 
-推荐变量形态：
+Recommended variable shape:
 
 ```css
 :root {
@@ -171,32 +171,32 @@ export type CardItem = {
 }
 ```
 
-不要做单一色系刷屏。用中性色 + 一个主强调色 + 必要状态色。
+Do not flood the page with a single color family. Use neutrals + one primary accent + necessary status colors.
 
-命名建议：
+Naming suggestions:
 
-- `site-`：站点级布局。
-- `nav-`：导航。
-- `section-`：通用页面分区。
-- `card-`：卡片。
-- `form-`：表单。
-- 业务域可用自己的前缀，如 `product-`、`case-`、`profile-`。
+- `site-`: site-level layout.
+- `nav-`: navigation.
+- `section-`: generic page sections.
+- `card-`: cards.
+- `form-`: forms.
+- Business domains can use their own prefix, e.g. `product-`, `case-`, `profile-`.
 
-固定栏、底部导航、移动端抽屉要考虑 `env(safe-area-inset-bottom)`。
+Fixed bars, bottom navigation, and mobile drawers should account for `env(safe-area-inset-bottom)`.
 
-## 公共 JS
+## Shared JS
 
-出现两次或容易回归的逻辑，放公共 helper：
+Logic that appears twice or is prone to regression goes into a shared helper:
 
-- `lib/routes.ts`：路由常量、导航激活判断。
-- `lib/format.ts`：金额、日期、数量、文本截断。
-- `lib/content.ts`：按 slug 查询、列表分组、兜底文案。
-- `lib/assets.ts`：图片兜底规则。
-- `hooks/useToast.ts` 或 `components/ui/Toast.tsx`：临时反馈。
+- `lib/routes.ts`: route constants, active-navigation checks.
+- `lib/format.ts`: currency, dates, quantities, text truncation.
+- `lib/content.ts`: lookup by slug, list grouping, fallback copy.
+- `lib/assets.ts`: image fallback rules.
+- `hooks/useToast.ts` or `components/ui/Toast.tsx`: transient feedback.
 
-公共 helper 尽量保持纯函数，方便测试和复用。
+Keep shared helpers as pure functions where possible, for easier testing and reuse.
 
-示例：
+Example:
 
 ```ts
 export function bySlug<T extends { slug: string }>(items: T[], slug: string) {
@@ -204,27 +204,27 @@ export function bySlug<T extends { slug: string }>(items: T[], slug: string) {
 }
 ```
 
-不要把筛选、排序、格式化、slug 查询写散在 JSX 里。
+Do not scatter filtering, sorting, formatting, and slug lookup throughout the JSX.
 
-## 延续文档
+## Continuity Doc
 
-生成并持续维护 `docs/frontend-map.md`，把它当**项目记忆**（续建时先读、收尾必更）。记录：
+Generate and continuously maintain `docs/frontend-map.md`, treating it as **project memory** (read it first when extending an existing project; always update it before wrapping up). Record:
 
-- 路由地图。
-- **组件清单**：每个共享组件叫什么、放哪、被哪些页面用——续建时先查这里，能复用就不新建。
-- 数据文件和字段形状。
-- 图片目录。
-- 新增页面步骤。
-- 指向 `docs/design-system.md` 的令牌系统（颜色/字体/刻度/签名元素的事实来源）。
+- The route map.
+- **Component inventory**: what each shared component is called, where it lives, and which pages use it — when extending, check here first and reuse rather than create new.
+- Data files and field shapes.
+- Image directories.
+- Steps for adding a new page.
+- A pointer to the token system in `docs/design-system.md` (the source of truth for colors / fonts / scales / signature elements).
 
-用户要求“完整项目”“后续持续加页面”时，这个文档是交付物的一部分。每次新增/改动后，把变化写回这里，下次续建靠它接力。
+When the user asks for a "complete project" or "continuously adding pages," this document is part of the deliverable. After every addition or change, write the change back here so the next extension can pick up from it.
 
-## README 最小内容
+## Minimum README Content
 
-项目根 README 至少写：
+The project root README should at least cover:
 
-- 项目用途。
-- 本地启动命令。
-- 目录说明。
-- 如何新增页面。
-- 如何替换文案和图片。
+- The project's purpose.
+- Local startup commands.
+- Directory overview.
+- How to add a page.
+- How to replace copy and images.
