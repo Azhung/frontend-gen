@@ -4,6 +4,26 @@
 
 `frontend-gen` is a frontend skill that generates or continuously extends pure-frontend React / Next.js projects from reference HTML, screenshots, images, copy, a requirements note, or a one-line idea. Works with **Claude Code** and **Codex**.
 
+## Why frontend-gen — the pain it solves
+
+- Still agonizing over the **right prompt** to get AI to generate a frontend page or project?
+- Still can't get AI to produce a **developer-grade** frontend — not a one-file template that won't even run?
+- Not a frontend dev, but need a real, runnable, good-looking project?
+
+This skill is built for exactly that — it turns AI from "spits out snippets" into "ships a real project":
+
+| Your pain | How frontend-gen solves it |
+| --- | --- |
+| Don't know how to prompt for a good frontend | A built-in end-to-end workflow — even a one-line idea yields a complete project |
+| AI dumps one giant file / a template that won't run | Generates a structured, runnable, maintainable project (routes / components / data / lib) |
+| Output looks generic, "obviously AI" | Locks a design-token system + anti-AI-slop rules so it looks intentionally designed |
+| Add one page and the style drifts / breaks | Project memory + anti-drift: read-before-edit, reuse tokens, never rebuild |
+| Generated project won't install / run (no Node) | Environment check + beginner install guidance + a zero-setup single-HTML fallback |
+| Don't know how to deploy / connect a backend / rebuild from Figma | Hands off to the right skill/MCP and walks you to launch |
+| Not responsive, no SEO | Responsive by default + SEO done automatically for websites |
+
+In short: **describe what you want in one sentence — get a runnable, maintainable, shippable frontend project, even if you don't write frontend code.**
+
 It's good for:
 
 - Building a Next.js App Router frontend project from scratch
