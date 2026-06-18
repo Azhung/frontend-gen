@@ -1,6 +1,6 @@
 interface:
-  display_name: "前端生成"
-  short_description: "生成可持续扩展的 React/Next 前端项目"
-  default_prompt: "使用 $frontend-gen，把这些参考资料生成一个可维护的 Next.js 纯前端项目。"
+  display_name: "Frontend Gen"
+  short_description: "Generate & extend maintainable React/Next frontend projects"
+  default_prompt: "Use $frontend-gen to turn these references into a maintainable Next.js pure-frontend project."
 policy:
   allow_implicit_invocation: true

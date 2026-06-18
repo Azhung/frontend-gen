@@ -1,6 +1,22 @@
 ---
 name: frontend-gen
-description: 【生成/完善前端项目 · Frontend project generator】从一句话、参考 HTML、截图、Figma 设计稿、文案或旧原型，生成、重构、复刻或持续扩展纯前端 React/Next.js（或按需 Vite/Astro/纯 HTML）项目。适用：官网、落地页、H5、作品集、工具站、后台前端、原型/设计稿转项目、继续加页面、改版、按 Figma 还原 UI、响应式自适应、加 SEO、部署上线、对接真实后端——即使没明说“生成项目”也应触发。先查环境(含没装 Node 的小白引导)→选技术栈→锁定可复用的设计令牌系统(不漂移、不像 AI 套模板)→生成或续建(frontend-map 项目记忆、先读后改不重建)→交互/动效/图标→分级测试→SEO→自检修复→部署/后端/Figma 衔接其他 skill 或 MCP。 EN: End-to-end skill to generate, refactor, clone, or continuously extend pure-frontend React/Next.js (or Vite/Astro/plain HTML) projects from a one-line idea, reference HTML, screenshot, Figma design, copy, or old prototype. Use for websites, landing pages, marketing pages, portfolios, dashboard UI, design-to-code, Figma-to-UI, adding pages, redesigns, responsive layout, SEO, deployment, and wiring real backends — trigger even when the user does not explicitly say “generate a project”. Locks a reusable design-token system (no drift, no generic AI look), treats the project as sustainable engineering (project memory, read-before-edit, never rebuild), covers interaction/motion/icons, testing, SEO and self-repair, and hands off to other skills/MCP for deploy, backend, and Figma.
+description: >-
+  [Frontend project generator] End-to-end skill to generate, refactor, clone, or
+  continuously extend pure-frontend React/Next.js (or Vite/Astro/plain HTML)
+  projects from a one-line idea, reference HTML, screenshot, Figma design, copy, or
+  an old prototype. Use it for websites, landing pages, H5, portfolios, dashboard
+  UI, design-to-code, Figma-to-UI, adding pages, redesigns, responsive layout, SEO,
+  deployment, and wiring real backends; trigger even when the user does not
+  explicitly say "generate a project". It checks the environment (with guidance for
+  non-developers who do not have Node), picks a tech stack, locks a reusable
+  design-token system (no drift, no generic AI look), generates or extends with
+  project memory (read-before-edit, never rebuild), covers interaction, motion and
+  icons, tiered testing, SEO, and self-repair, and hands off to other skills or MCP
+  for deploy, backend, and Figma. 中文：从一句话、参考 HTML、截图、Figma 设计稿、文案或
+  旧原型，生成、重构、复刻或持续扩展纯前端 React/Next.js（或按需 Vite/Astro/纯 HTML）
+  项目；适用于做网站、做网页、做官网、落地页、H5、移动端、作品集、工具站、后台前端、原型
+  或设计稿转项目、继续加页面、改版重做、按 Figma 还原 UI、响应式自适应、加 SEO 优化、上线
+  部署、对接真实后端，即使没明说"生成项目/写前端/做页面"也应触发。
 ---
 
 # Frontend Generation
