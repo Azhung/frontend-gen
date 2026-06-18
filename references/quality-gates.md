@@ -66,9 +66,9 @@
 
 - 导航链接可点击，当前页状态正确。
 - 表单、Tab、筛选、弹层、轮播等可见控件不是假摆设，至少有合理本地状态。
-- 按钮有 hover/focus/disabled 状态。
-- 空状态、错误状态、缺图片状态可见。
-- 动画尊重 `prefers-reduced-motion`。
+- 可交互元素有 hover/focus-visible/active/disabled，以及 空/加载/错误/缺图 兜底（见 `references/interaction-motion.md`）。
+- 动效克制：只一个主入场时刻、过渡用令牌时长、无满屏飞入；`prefers-reduced-motion` 生效。
+- 图标同族同尺寸同线宽，无 emoji 充当功能图标；装饰图标 `aria-hidden`，承载信息的有 `aria-label`。
 
 ## 可访问性基础
 

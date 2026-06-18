@@ -72,11 +72,12 @@
   /* 间距刻度 */
   --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px;
   --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px;
-  /* 圆角 / 阴影 / 容器 / 动效 */
+  /* 圆角 / 阴影 / 容器 / 动效 / 图标 */
   --radius: 8px; --radius-lg: 16px;
   --shadow: 0 1px 2px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.05);
   --container: 1120px;
-  --ease: cubic-bezier(.2,.6,.2,1); --dur: 200ms;
+  --ease: cubic-bezier(.2,.6,.2,1); --dur: 200ms;   /* 动效令牌：过渡统一用这两个 */
+  --icon-size: 20px; --icon-stroke: 1.75;           /* 图标统一尺寸/线宽 */
 }
 @media (prefers-reduced-motion: reduce){ :root{ --dur: 0ms; } }
 ```
